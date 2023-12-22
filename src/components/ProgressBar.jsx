@@ -6,18 +6,15 @@ export default function ProgressBar({ activeStep, totalSteps }) {
     totalSteps: PropTypes.number,
   };
   return (
-    <div className='w-full flex justify-between'>
+    <div className='w-full flex justify-between gap-2'>
       {Array.from({ length: totalSteps }, (_, i) => {
         const isActive = i === activeStep;
 
         return (
           <div
             key={i}
-            className='flex-1 h-1 bg-gray-100 rounded-full mx-2'
+            className={`flex-1 h-1 ${isActive ? 'bg-blue-200' : 'bg-gray-100'}`}
           >
-            <div
-              className={`h-1  ${isActive ? 'bg-blue-100' : 'bg-gray-100'}`}
-            />
           </div>
         );
       })}

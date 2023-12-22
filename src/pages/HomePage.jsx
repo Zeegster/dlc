@@ -12,12 +12,12 @@ const HomePage = () => {
   return (
     
     <div className='w-full h-screen relative font-mont flex flex-col'>
-    <Button 
+    {/* <Button 
       className='p-3 mx-auto text-black border-2 bg-blue-600 border-violent-100'
       onClick={()=>nav('/tester')}
     >
       TESTER
-    </Button>
+    </Button> */}
       <div className='bg-blue-100 h-full'>
         <Header data={HomePageContent} />
         <Theme data={HomePageContent} />

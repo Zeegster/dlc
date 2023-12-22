@@ -33,6 +33,7 @@ const MyModal = ({ visible, children, setModal ,index }) => {
         <div className='fixed inset-0 z-10 flex justify-center'>
           <div className='flex flex-col min-h-full items-center justify-center text-center p-4 w-3/4'>
             <div className='w-full relative flex justify-end'>
+            
               <button
                 type='button'
                 className='inline-flex -mr-6 w-auto justify-center rounded-t rounded-b-none bg-gray p-1 text-sm font-semibold text-gray-900 shadow-sm transition-all duration-100 relative outline-none'

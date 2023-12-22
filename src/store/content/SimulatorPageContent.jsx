@@ -11,6 +11,7 @@ import {
 
 import { i1 } from '../../assets/base64/infogragic';
 import { questions } from '../StoreStepper';
+import { SelectInput } from '../../components/Inputs';
 
 export const SimulatorPageContent = {
   items: [
@@ -116,15 +117,17 @@ export const SimulatorPageContent = {
           </figure>
           <div>
             <p className='font-bold'>Распределите явления на схеме:</p>
-            <ul>
-              {questions.list.map((q) => {
-                return (
-                  <li key={q.id}>
-                    <b>{q.id}</b> {q.text}
-                  </li>
-                );
-              })}
-            </ul>
+            {questions.list.map((item) => {
+ return (
+   <SelectInput
+     key={item.id}
+     text={'Выберите ответ'}
+     values={[item.text]} // Pass the text as the value for the option
+     isCorrect={true}
+   />
+ );
+})
+}
           </div>
         </div>
         </>
@@ -372,7 +375,7 @@ export const SimulatorPageContent = {
       title: '4. Приборы измерений параметров света',
       content: (
         <>
-          <div className='flex m-auto items-center justify-center'>
+          <div className='flex w-full justify-center'>
             <div className='p-4 flex flex-col gap-4 justify-center'>
               <h2 className='font-bold mb-2'>
                 Какой прибор изображен на рисунке ?
@@ -386,7 +389,6 @@ export const SimulatorPageContent = {
               />
             </div>
             <img
-              className='m-auto'
               width={390}
               src={im2}
             />

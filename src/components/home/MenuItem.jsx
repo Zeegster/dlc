@@ -116,7 +116,7 @@ const MenuItem = ({id, title, desk, supdesk, img, link ,collapse_s,collapse_t}) 
 
                 <div className='collapse collapse-arrow bg-base-200 '>
                   <input
-                    type='radio'
+                    type='checkbox'
                     name='my-accordion'
                   />
                   <h4 className='collapse-title text-xl font-medium'>
@@ -129,7 +129,7 @@ const MenuItem = ({id, title, desk, supdesk, img, link ,collapse_s,collapse_t}) 
                 <div className='collapse collapse-arrow bg-base-200'
                 >
                   <input
-                    type='radio'
+                    type='checkbox'
                     name='my-accordion'
                   />
                   <div className='collapse-title text-xl font-medium '>

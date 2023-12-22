@@ -66,18 +66,18 @@ export function VirtualStepper() {
 
   return (
     <>
-      <div className='w-11/12 mx-auto h-[80%] px-12 py-3 flex flex-col justify-between'>
+      <div className='w-11/12 m-auto h-4/5 px-12  flex flex-col justify-center'>
         <ProgressBar
           activeStep={activeStep}
           totalSteps={totalSteps}
         />
         <Stepper
-          className='h-5/6 my-auto'
+          className='h-5/6 bg-white'
           activeStep={activeStep}
         >
           <Step
             key={activeItem.id}
-            className='w-full flex flex-col h-full'
+            className='w-full flex flex-col h-full bg-white place-items-stretch'
             onClick={() => setActiveStep(activeStep)}
           >
             <StepContainer
