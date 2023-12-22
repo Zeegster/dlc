@@ -66,7 +66,7 @@ export function VirtualStepper() {
 
   return (
     <>
-      <div className='w-11/12 m-auto h-4/5 px-12  flex flex-col justify-center'>
+      <div className='w-11/12 m-auto h-4/5 px-12  flex flex-col justify-evenly'>
         <ProgressBar
           activeStep={activeStep}
           totalSteps={totalSteps}
