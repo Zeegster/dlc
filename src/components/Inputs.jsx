@@ -15,6 +15,9 @@ export const SelectInput = ({ text, values, isCorrect }) => {
  
   };
 
+  useEffect(() => {
+    console.log(answer);
+  }, [answer]);
 
   return (
     <><select
