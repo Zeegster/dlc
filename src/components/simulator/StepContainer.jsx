@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 
-const StepContainer = ({ title, content, steps, activeStep, question }) => {
+
+const StepContainer = ({ title, content, steps, activeStep}) => {
+
   return (
     <>
       <div className='text-black flex items-center w-full justify-between border-b-2 border-blue-200'>
@@ -13,7 +15,6 @@ const StepContainer = ({ title, content, steps, activeStep, question }) => {
 
       <div className='text-black font-normal overflow-y-auto flex flex-col text-lg py-4'>
         {content}
-        {question}
       </div>
     </>
   );

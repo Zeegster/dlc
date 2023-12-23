@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Stepper, Step } from '@material-tailwind/react';
 import ProgressBar from '../ProgressBar';
@@ -8,6 +8,8 @@ import {
 } from '../../store/content/SimulatorPageContent';
 import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
+import { questions, useQuestionsStepper } from '../../store/StoreStepper';
+
 
 export function VirtualStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -16,54 +18,31 @@ export function VirtualStepper() {
     activeStep < totalSteps - 1 ? setActiveStep((cur) => cur + 1) : '';
 
   const handlePrev = () =>
-    activeStep > 0 ? setActiveStep((cur) => cur - 1) : '';
+  activeStep > 0 ? setActiveStep((cur) => cur - 1) : '';
 
   const totalSteps = SimulatorPageContent.items.length;
 
   const activeItem = SimulatorPageContent.items[activeStep];
+  const answer = useQuestionsStepper((state)=> state.answer)
+const addAnswerState = useQuestionsStepper((state)=>state.addCorrectState)
+ 
+  
+const checkAnswers = () => {
+  answer.forEach((answerItem) => {
+    const question = questions.list.find(q => q.id === answer.indexOf(answerItem));
+    console.log(question, answer.indexOf(answerItem));
 
-  const CheckAnswer = () => {
-    // Проходим по всем вопросам в активном элементе
-    activeItem.questions.map((question) => {
-      // Получаем текущий ответ пользователя
-
-      const userAnswer = question;
-      let correctAnswer;
-      console.log(userAnswer);
-      // Получаем правильный ответ
-      activeItem.answers.map((answer)=>{
-        correctAnswer = answer
-         
-         return correctAnswer
-      })
-      
-      // В зависимости от типа вопроса используем разные методы сравнения
-      if (question.type === 'select') {
-        // Если вопрос типа 'select', то сравниваем выбранный ответ с правильным
-        if (userAnswer === correctAnswer) {
-          // Ответ правильный, окрашиваем в зеленый
-          question.isCorrect = true;
-        } else {
-          // Ответ неправильный, окрашиваем в красный
-          question.isCorrect = false;
-        }
-      } else if (question.type === 'input') {
-        // Если вопрос типа 'input', то сравниваем введенный текст с правильным ответом
-        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-          // Ответ правильный, окрашиваем в зеленый
-          question.isCorrect = true;
-        } else {
-          // Ответ неправильный, окрашиваем в красный
-          question.isCorrect = false;
-        }
-      }
-    });
-    // Обновляем состояние
-    setActivItem({ ...activeItem });
-    console.log(activItem);
-  };
-
-
+    if (question && question.answer === answerItem.userAnswer) {
+      console.log(true);
+      addAnswerState(true)
+    } else {
+      console.log(false);
+      addAnswerState(false)
+    }
+  });
+  console.log(answer);
+ };
+ 
   return (
     <>
       <div className='w-11/12 m-auto h-4/5 px-12  flex flex-col justify-evenly'>
@@ -94,7 +73,7 @@ export function VirtualStepper() {
           onClick={handlePrev}
           text='Назад'
         />
-        <CommonButton text='Проверить ответ' onClick={CheckAnswer}/>
+        <CommonButton onClick={checkAnswers} text='Проверить ответ' />
         <CommonButton
           onClick={handleNext}
           text='Далее'

@@ -515,10 +515,10 @@
   dependencies:
     client-only "^0.0.1"
 
-"@heroicons/react@^2.0.18":
-  version "2.0.18"
-  resolved "https://registry.npmjs.org/@heroicons/react/-/react-2.0.18.tgz"
-  integrity sha512-7TyMjRrZZMBPa+/5Y8lN0iyvUU/01PeMGX2+RE7cQWpEUIcb4QotzUObFkJDejj/HUH4qjP/eQ0gzzKs2f+6Yw==
+"@heroicons/react@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.1.1.tgz#422deb80c4d6caf3371aec6f4bee8361a354dc13"
+  integrity sha512-JyyN9Lo66kirbCMuMMRPtJxtKJoIsXKS569ebHGGRKbl8s4CtUfLnyKJxteA+vIKySocO4s1SkTkGS4xtG/yEA==
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.13"
@@ -2963,6 +2963,11 @@ raf@^3.1.0:
   integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
   dependencies:
     performance-now "^2.1.0"
+
+react-daisyui@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-daisyui/-/react-daisyui-5.0.0.tgz#9ce2fe8dd540f6b12650fc0d2e7953c1026789b3"
+  integrity sha512-j1cugAxALmIbihycGBh7P9H3UXrfsvqu84qM6O55l7nOKST43IjUkZjmNav/7s0ZaUpa9Y+52mFchUb2zvon1A==
 
 react-dom@18.2.0, react-dom@^18.2.0:
   version "18.2.0"

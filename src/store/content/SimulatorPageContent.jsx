@@ -1,51 +1,17 @@
 import imageUrl from '../../assets/img/step11-2.jpg';
-import {
-  im2,
-  im3,
-  im4,
-  im5,
-  im6,
-  im7,
-  im8,
-} from '../../assets/base64/stepper';
+import { im2, im3, im4, im5, im6, im7, im8 } from '../../assets/base64/stepper';
 
 import { i1 } from '../../assets/base64/infogragic';
-import { questions } from '../StoreStepper';
+import { questions, useQuestionsStepper } from '../StoreStepper';
 import { SelectInput } from '../../components/Inputs';
+import { create } from 'zustand';
 
 export const SimulatorPageContent = {
+
   items: [
     {
-      questions: [
-        {
-          id: 1,
-          text: <>явление дисперсии</>,
-        },
-        {
-          id: 2,
-          text: <>явление дифракции</>,
-        },
-        {
-          id: 3,
-          text: <>интерференцию</>,
-        },
-      ],
-      answers: [
-        {
-          id: 1,
-          text: 'явление дисперсии',
-        },
-        {
-          id: 3,
-          text: 'явление дифракции',
-        },
-        {
-          id: 2,
-          text: 'интерференцию',
-        },
-      ],
 
-      id: 0,
+      id: 1,
       title: '1. Физические явления света',
       content: (
         <>
@@ -78,58 +44,53 @@ export const SimulatorPageContent = {
             света в результате наложения (суперпозиции) нескольких световых
             волн.{' '}
           </p>
-          <div className='flex mt-10'>
+          <div className='flex mt-10  whitespace-wrap'>
+        <div className='w-1/2'>
           <figure className='relative'>
             <img
               width={600}
               src={i1}
             />
-            <select
-              className='p-1 border-2 absolute top-36 left-36'
+            <span
+              className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[45%] left-[24%]'
               name='one'
               id='one'
             >
-              <option></option>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-            </select>
-            <select
-              className='p-1 border-2 absolute top-40 left-60'
+              1
+            </span>
+            <span
+              className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[20%] left-[40%]'
               name='two'
-              id='two'
+              id='2'
             >
-              <option></option>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-            </select>
-            <select
-              className='p-1 border-2 absolute top-24 left-96'
+              2
+            </span>
+            <span
+              className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[60%] left-[65%]'
               name='three'
-              id='three'
+              id='3'
             >
-              <option></option>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-            </select>
+              3
+            </span>
           </figure>
-          <div>
-            <p className='font-bold'>Распределите явления на схеме:</p>
-            {questions.list.map((item) => {
- return (
-   <SelectInput
-     key={item.id}
-     text={'Выберите ответ'}
-     values={[item.text]} // Pass the text as the value for the option
-     isCorrect={true}
-   />
- );
-})
-}
-          </div>
         </div>
+        <ul className='list-inside list-decimal'>
+          <p className='font-bold'>Определите явления</p>
+          {questions.list.map((li) => {
+            return (
+              <li
+                className='flex items-center gap-2 w-fit'
+                key={li.id}
+              >
+                <SelectInput
+                  values={li.text}
+                  isCorrect={li.answer}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
         </>
       ),
     },
@@ -596,4 +557,5 @@ export const SimulatorPageContent = {
       ),
     },
   ],
-};
+
+}
