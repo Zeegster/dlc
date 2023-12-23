@@ -28,20 +28,19 @@ const addAnswerState = useQuestionsStepper((state)=>state.addCorrectState)
  
   
 const checkAnswers = () => {
-  answer.forEach((answerItem) => {
-    const question = questions.list.find(q => q.id === answer.indexOf(answerItem));
-    console.log(question, answer.indexOf(answerItem));
-
+  let correctAnswers = [];
+  answer.forEach((answerItem, index) => {
+    const question = questions.list.find(q => q.id === index);
     if (question && question.answer === answerItem.userAnswer) {
-      console.log(true);
-      addAnswerState(true)
+      correctAnswers.push(true);
     } else {
-      console.log(false);
-      addAnswerState(false)
+      correctAnswers.push(false);
     }
   });
-  console.log(answer);
+  addAnswerState(correctAnswers);
  };
+ 
+ 
  
   return (
     <>

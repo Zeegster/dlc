@@ -81,11 +81,12 @@ export const useQuestionsStepper = create(devtools((set) => ({
    },
    addCorrectState: (correct) => {
     set(produce((state) => {
-    state.answer.forEach((userAnswer) => {
-      userAnswer.correct = correct;
-    });
+      state.answer = state.answer.map((userAnswer, index) => {
+        return { ...userAnswer, Correct: correct[index] };
+      });
     }));
    }
+   
    
    
    
