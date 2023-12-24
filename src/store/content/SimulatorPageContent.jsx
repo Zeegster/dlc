@@ -2,15 +2,12 @@ import imageUrl from '../../assets/img/step11-2.jpg';
 import { im2, im3, im4, im5, im6, im7, im8 } from '../../assets/base64/stepper';
 
 import { i1 } from '../../assets/base64/infogragic';
-import { questions, useQuestionsStepper } from '../StoreStepper';
-import { SelectInput } from '../../components/Inputs';
-import { create } from 'zustand';
+import { questions } from '../StoreStepper';
+import { SelectInput, TextInput } from '../../components/Inputs';
 
 export const SimulatorPageContent = {
-
   items: [
     {
-
       id: 1,
       title: '1. Физические явления света',
       content: (
@@ -45,53 +42,55 @@ export const SimulatorPageContent = {
             волн.{' '}
           </p>
           <div className='flex mt-10  whitespace-wrap'>
-        <div className='w-1/2'>
-          <figure className='relative'>
-            <img
-              width={600}
-              src={i1}
-            />
-            <span
-              className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[45%] left-[24%]'
-              name='one'
-              id='one'
-            >
-              1
-            </span>
-            <span
-              className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[20%] left-[40%]'
-              name='two'
-              id='2'
-            >
-              2
-            </span>
-            <span
-              className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[60%] left-[65%]'
-              name='three'
-              id='3'
-            >
-              3
-            </span>
-          </figure>
-        </div>
-        <ul className='list-inside list-decimal'>
-          <p className='font-bold'>Определите явления</p>
-          {questions.list.map((li) => {
-            return (
-              <li
-                className='flex items-center gap-2 w-fit'
-                key={li.id}
-              >
-                <SelectInput
-                index={li.id}
-                  values={li.text}
-                  isCorrect={li.answer}
+            <div className='w-1/2'>
+              <figure className='relative'>
+                <img
+                  width={600}
+                  src={i1}
                 />
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+                <span
+                  className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[45%] left-[24%]'
+                  name='one'
+                  id='one'
+                >
+                  1
+                </span>
+                <span
+                  className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[20%] left-[40%]'
+                  name='two'
+                  id='2'
+                >
+                  2
+                </span>
+                <span
+                  className='p-1 rounded-[100%] w-10 h-10 text-center border bg-white absolute top-[60%] left-[65%]'
+                  name='three'
+                  id='3'
+                >
+                  3
+                </span>
+              </figure>
+            </div>
+            <ul className='list-inside list-decimal'>
+              <p className='font-bold'>Определите явления</p>
+              {questions &&
+                questions[0] &&
+                questions[0].map((li) => {
+                  return (
+                    <li
+                      className='flex items-center gap-2 w-fit'
+                      key={li.id}
+                    >
+                      <SelectInput
+                        index={li.id}
+                        values={li.text}
+                        isCorrect={li.answer}
+                      />
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
         </>
       ),
     },
@@ -100,6 +99,44 @@ export const SimulatorPageContent = {
       title: '2. Энергетические характеристики света',
       content: (
         <>
+          <ol className='list-decimal list-inside mb-2'>
+            {' '}
+            <li>
+              {' '}
+              <b>Люмен (лм)</b> – единица измерения светового потока (лат. lumen
+              – «свет»),{' '}
+            </li>{' '}
+            <li>
+              {' '}
+              <b>Cила света Iv</b>, - равна световому потоку Fv,
+              распространяющемся в единичном телесном угле Iv = Fv /Ω.{' '}
+            </li>{' '}
+          </ol>{' '}
+          <p className='mb-2'>
+            {' '}
+            Для измерения силы света введена особая единица –{' '}
+            <b>кандела (кд)</b> (лат. candela — свеча).{' '}
+          </p>{' '}
+          <p className='mb-2'>
+            {' '}
+            Одна кандела определена как «сила света в заданном направлении
+            источника, испускающего монохроматическое излучение частотой 540·10
+            <sup>12</sup> Гц{' '}
+          </p>{' '}
+          <p className='mb-2'>
+            {' '}
+            <b>Светимость Mv</b> – это физическая величина, определяемая
+            отношением светового потока, исходящего из малого участка
+            поверхности, содержащего рассматриваемую точку, к площади этого
+            участка,{' '}
+          </p>{' '}
+          <p className='mb-2'>
+            {' '}
+            <b>Яркость Lv</b> имеет физический смысл светового потока,
+            распространяющегося в единичном телесном угле с площадки единичной
+            площади, нормально расположенной к направлению распространения
+            света.{' '}
+          </p>
           <table className='table table-fixed border-collapse border-2 border-black text-center'>
             <thead>
               <tr>
@@ -149,16 +186,13 @@ export const SimulatorPageContent = {
                   <sub>e</sub> / dt
                 </td>
                 <td className='border-2 border-black p-2'>
-                  <input
-                    type='text'
-                    name='forVt'
-                    id='Vt'
-                    placeholder='Заполните пропуск'
-                  />
+                  <TextInput index={0} />
                 </td>
               </tr>
               <tr>
-                <td className=' border-2 border-black p-2'>Сила излучения</td>
+                <td className=' border-2 border-black p-2'>
+                  <TextInput index={1} />
+                </td>
                 <td className='border-2 border-black p-2'>
                   <i>
                     I<sub>e</sub>
@@ -258,12 +292,7 @@ export const SimulatorPageContent = {
                   = dΦ<sub>e</sub> / d<i>A</i>
                 </td>
                 <td className='border-2 border-black p-2'>
-                  <input
-                    type='text'
-                    name='forVt/m2'
-                    id='Vt/m2'
-                    placeholder='Заполните пропуск'
-                  />
+                  <TextInput index={2} />
                 </td>
               </tr>
               <tr>
@@ -286,55 +315,10 @@ export const SimulatorPageContent = {
         </>
       ),
     },
+
     {
       id: 2,
-      title: '3. Единицы измерения',
-      content: (
-        <>
-          <ol className='list-decimal list-inside mb-2'>
-            {' '}
-            <li>
-              {' '}
-              <b>Люмен (лм)</b> – единица измерения светового потока (лат. lumen
-              – «свет»),{' '}
-            </li>{' '}
-            <li>
-              {' '}
-              <b>Cила света Iv</b>, - равна световому потоку Fv,
-              распространяющемся в единичном телесном угле Iv = Fv /Ω.{' '}
-            </li>{' '}
-          </ol>{' '}
-          <p className='mb-2'>
-            {' '}
-            Для измерения силы света введена особая единица –{' '}
-            <b>кандела (кд)</b> (лат. candela — свеча).{' '}
-          </p>{' '}
-          <p className='mb-2'>
-            {' '}
-            Одна кандела определена как «сила света в заданном направлении
-            источника, испускающего монохроматическое излучение частотой 540·10
-            <sup>12</sup> Гц{' '}
-          </p>{' '}
-          <p className='mb-2'>
-            {' '}
-            <b>Светимость Mv</b> – это физическая величина, определяемая
-            отношением светового потока, исходящего из малого участка
-            поверхности, содержащего рассматриваемую точку, к площади этого
-            участка,{' '}
-          </p>{' '}
-          <p className='mb-2'>
-            {' '}
-            <b>Яркость Lv</b> имеет физический смысл светового потока,
-            распространяющегося в единичном телесном угле с площадки единичной
-            площади, нормально расположенной к направлению распространения
-            света.{' '}
-          </p>
-        </>
-      ),
-    },
-    {
-      id: 3,
-      title: '4. Приборы измерений параметров света',
+      title: '3. Приборы измерений параметров света',
       content: (
         <>
           <div className='flex w-full justify-center'>
@@ -342,13 +326,8 @@ export const SimulatorPageContent = {
               <h2 className='font-bold mb-2'>
                 Какой прибор изображен на рисунке ?
               </h2>
-              <input
-                className='border-2 p-1'
-                type='text'
-                name='forLuks'
-                id='Luks'
-                placeholder='Впишите правильный ответ'
-              />
+              <TextInput index={0} />
+
             </div>
             <img
               width={390}
@@ -359,8 +338,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 4,
-      title: '5. Нормы освещенности',
+      id: 3,
+      title: '4. Нормы освещенности',
       content: (
         <>
           <p className='mb-2'>
@@ -407,8 +386,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 5,
-      title: '6. Устройство источников света',
+      id: 4,
+      title: '5. Устройство источников света',
       content: (
         <>
           <h2 className='font-bold mb-2'>Лампы галогенные</h2>{' '}
@@ -436,8 +415,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 6,
-      title: '7. Газорязрядные лампы',
+      id: 5,
+      title: '6. Газорязрядные лампы',
       content: (
         <>
           <p className='mb-2'>
@@ -455,8 +434,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 7,
-      title: '8. Виды люминесцентных ламп',
+      id: 6,
+      title: '7. Виды люминесцентных ламп',
       content: (
         <>
           <img
@@ -468,8 +447,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 8,
-      title: '9. Светодиодные лампы',
+      id: 7,
+      title: '8. Светодиодные лампы',
       content: (
         <>
           <p className='mb-2'>
@@ -486,8 +465,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 9,
-      title: '10. Типы современных ламп',
+      id: 8,
+      title: '9. Типы современных ламп',
       content: (
         <>
           <img
@@ -499,8 +478,8 @@ export const SimulatorPageContent = {
       ),
     },
     {
-      id: 10,
-      title: '11. Осветительная арматура',
+      id: 9,
+      title: '10. Осветительная арматура',
       content: (
         <>
           <h2 className='text-xl font-bold mb-2'>
@@ -513,9 +492,11 @@ export const SimulatorPageContent = {
                 id='list1'
                 className='mb-2 list-decimal list-inside'
               >
-                {questions.list1.map((listItem) => (
-                  <li key={listItem.id}>{listItem.text}</li>
-                ))}
+                {questions &&
+                  questions[0] &&
+                  questions[0].map((listItem) => (
+                    <li key={listItem.id}>{listItem.text}</li>
+                  ))}
               </ol>
             </div>
             <figure className='ml-10'>
@@ -558,5 +539,4 @@ export const SimulatorPageContent = {
       ),
     },
   ],
-
-}
+};

@@ -1,47 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Stepper, Step } from '@material-tailwind/react';
 import ProgressBar from '../ProgressBar';
-import {
-  SimulatorPageContent,
-  
-} from '../../store/content/SimulatorPageContent';
+import { SimulatorPageContent } from '../../store/content/SimulatorPageContent';
 import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
 import { questions, useQuestionsStepper } from '../../store/StoreStepper';
 
-
 export function VirtualStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [activItem, setActivItem] = React.useState(false)
-  const handleNext = () =>
-    activeStep < totalSteps - 1 ? setActiveStep((cur) => cur + 1) : '';
+  const handleNext = () => {
+    if (activeStep < totalSteps - 1) {
+      setActiveStep((cur) => cur + 1);
+      clearAnswer();
+    }
+  };
 
-  const handlePrev = () =>
-  activeStep > 0 ? setActiveStep((cur) => cur - 1) : '';
+  const handlePrev = () => {
+    if (activeStep > 0) {
+      setActiveStep((cur) => cur - 1);
+      clearAnswer();
+    }
+  };
 
   const totalSteps = SimulatorPageContent.items.length;
 
   const activeItem = SimulatorPageContent.items[activeStep];
-  const answer = useQuestionsStepper((state)=> state.answer)
-const addCorrectState = useQuestionsStepper((state)=>state.addCorrectState)
+  const answer = useQuestionsStepper((state) => state.answer);
+  const { addCorrectState, clearAnswer } = useQuestionsStepper();
+
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  // Update isDisabled whenever answer or questions changes
+  // Update isDisabled whenever answer or questions changes
+useEffect(() => {
+  if (questions && questions[activeStep]) {
+    setIsDisabled(answer.length !== questions[activeStep].length);
+  } else {
+    setIsDisabled(true);
+  }
+ }, [answer, questions]);
  
-  
-const checkAnswers = () => {
-  let correctAnswers = [];
-  answer.forEach((answerItem, index) => {
-    const question = questions.list.find(q => q.id === index);
-    if (question && question.answer === answerItem.userAnswer) {
-      correctAnswers.push(true);
-    } else {
-      correctAnswers.push(false);
-    }
-  });
-  addCorrectState(correctAnswers,activeStep);
- };
- 
- 
- 
+
+  const checkAnswers = () => {
+    let correctAnswers = [];
+
+    answer.forEach((answerItem, index) => {
+      const question = questions[activeStep].find((q) => q.id === index);
+      
+      if (question && question.answer === answerItem.userAnswer) {
+        correctAnswers.push(true);
+      } else {
+        correctAnswers.push(false);
+      }
+    });
+    addCorrectState(correctAnswers, activeStep);
+  };
+
   return (
     <>
       <div className='w-11/12 m-auto h-4/5 px-12  flex flex-col justify-evenly'>
@@ -72,7 +87,11 @@ const checkAnswers = () => {
           onClick={handlePrev}
           text='Назад'
         />
-        <CommonButton onClick={checkAnswers} text='Проверить ответ' />
+        <CommonButton
+          onClick={checkAnswers}
+          text='Проверить ответ'
+          disabled={isDisabled}
+        />
         <CommonButton
           onClick={handleNext}
           text='Далее'
