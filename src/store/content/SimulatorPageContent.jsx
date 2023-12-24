@@ -83,6 +83,7 @@ export const SimulatorPageContent = {
                 key={li.id}
               >
                 <SelectInput
+                index={li.id}
                   values={li.text}
                   isCorrect={li.answer}
                 />

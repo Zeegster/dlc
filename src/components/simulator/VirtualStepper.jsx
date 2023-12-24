@@ -24,7 +24,7 @@ export function VirtualStepper() {
 
   const activeItem = SimulatorPageContent.items[activeStep];
   const answer = useQuestionsStepper((state)=> state.answer)
-const addAnswerState = useQuestionsStepper((state)=>state.addCorrectState)
+const addCorrectState = useQuestionsStepper((state)=>state.addCorrectState)
  
   
 const checkAnswers = () => {
@@ -37,7 +37,7 @@ const checkAnswers = () => {
       correctAnswers.push(false);
     }
   });
-  addAnswerState(correctAnswers);
+  addCorrectState(correctAnswers,activeStep);
  };
  
  
@@ -81,4 +81,3 @@ const checkAnswers = () => {
     </>
   );
 }
-
