@@ -27,6 +27,7 @@
     "react-quiz-component": "^0.5.1",
     "react-router-dom": "^6.21.0",
     "react-select": "^5.7.4",
+    "react-xarrows": "^2.0.2",
     "rollup": "^4.9.0",
     "sort-by": "^1.2.0",
     "zustand": "^4.4.1"
