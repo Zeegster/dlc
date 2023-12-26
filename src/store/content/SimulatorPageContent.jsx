@@ -3,7 +3,12 @@ import { im2, im3, im4, im5, im6, im7, im8 } from '../../assets/base64/stepper';
 
 import { i1 } from '../../assets/base64/infogragic';
 import { questions } from '../StoreStepper';
-import { SelectInput, TextInput } from '../../components/Inputs';
+import {
+  SelectInput,
+  TextInput,
+  QCheckBox,
+  MyDragList,
+} from '../../components/Inputs';
 
 export const SimulatorPageContent = {
   items: [
@@ -73,22 +78,7 @@ export const SimulatorPageContent = {
             </div>
             <ul className='list-inside list-decimal'>
               <p className='font-bold'>Определите явления</p>
-              {questions &&
-                questions[0] &&
-                questions[0].map((li) => {
-                  return (
-                    <li
-                      className='flex items-center gap-2 w-fit'
-                      key={li.id}
-                    >
-                      <SelectInput
-                        index={li.id}
-                        values={li.text}
-                        isCorrect={li.answer}
-                      />
-                    </li>
-                  );
-                })}
+              <SelectInput QuestionStore={0} />
             </ul>
           </div>
         </>
@@ -186,12 +176,18 @@ export const SimulatorPageContent = {
                   <sub>e</sub> / dt
                 </td>
                 <td className='border-2 border-black p-2'>
-                  <TextInput index={0} />
+                  <TextInput
+                    QuestionStore={1}
+                    index={0}
+                  />
                 </td>
               </tr>
               <tr>
                 <td className=' border-2 border-black p-2'>
-                  <TextInput index={1} />
+                  <TextInput
+                    QuestionStore={1}
+                    index={1}
+                  />
                 </td>
                 <td className='border-2 border-black p-2'>
                   <i>
@@ -292,7 +288,10 @@ export const SimulatorPageContent = {
                   = dΦ<sub>e</sub> / d<i>A</i>
                 </td>
                 <td className='border-2 border-black p-2'>
-                  <TextInput index={2} />
+                  <TextInput
+                    QuestionStore={1}
+                    index={2}
+                  />
                 </td>
               </tr>
               <tr>
@@ -326,8 +325,10 @@ export const SimulatorPageContent = {
               <h2 className='font-bold mb-2'>
                 Какой прибор изображен на рисунке ?
               </h2>
-              <TextInput index={0} />
-
+              <TextInput
+                QuestionStore={2}
+                index={0}
+              />
             </div>
             <img
               width={390}
@@ -346,35 +347,28 @@ export const SimulatorPageContent = {
             {' '}
             В офисах общего назначения с использованием компьютеров освещённость
             должна быть от{' '}
-            <input
-              className='border-b-2 w-10'
-              type='text'
-              name='for200'
-              id='200'
-            />{' '}
+            <TextInput
+              QuestionStore={3}
+              index={0}
+            />
             до 500 лк,{' '}
           </p>{' '}
           <p className='mb-2'>
             {' '}
             В коридорах и холлах – от{' '}
-            <input
-              className='border-b-2 w-10'
-              type='text'
-              name='for50'
-              id='50'
-            />{' '}
+            <TextInput
+              QuestionStore={3}
+              index={1}
+            />
             до 100 лк.{' '}
           </p>{' '}
           <p className='mb-2'> Для чтения необходима освещённость 30–50 лк. </p>{' '}
           <p className='mb-2'>
             {' '}
-            <input
-              className='border-b-2 w-64'
-              type='text'
-              name='forSun'
-              id='sun'
-              placeholder='Прямые солнечные лучи'
-            />{' '}
+            <TextInput
+              QuestionStore={3}
+              index={2}
+            />
             дают освещённость 100 тыс. лк, а в пасмурный день – 1000 лк.{' '}
           </p>{' '}
           <p>
@@ -399,13 +393,10 @@ export const SimulatorPageContent = {
             {' '}
             В некоторых типах ламп накаливания применяют галогеновый
             наполнитель, как правило,{' '}
-            <input
-              className='border-b-2 w-10'
-              type='text'
-              name='forYod'
-              id='yod'
-              placeholder='Йод'
-            />{' '}
+            <TextInput
+              QuestionStore={4}
+              index={0}
+            />
           </p>{' '}
           <p>
             {' '}
@@ -419,17 +410,19 @@ export const SimulatorPageContent = {
       title: '6. Газорязрядные лампы',
       content: (
         <>
-          <p className='mb-2'>
-            {' '}
-            Принцип действия газоразрядных ламп основан на свечении газов и
-            паров металла при электрическом разряде.{' '}
-          </p>{' '}
-          <p>
-            {' '}
-            В этих источниках света летучий металл ртуть или натрий возбуждается
-            электронами, которые ускоряются в пространстве между двумя
-            электродами под действием приложенного к ним напряжения{' '}
-          </p>
+          <p className='mb-2 flex'>
+ {' '}
+ Принцип действия газоразрядных ламп основан на свечении газов и
+ паров <><SelectInput QuestionStore={5} QuestionIndex={0} /></> при электрическом разряде.{' '}
+</p>{' '}
+
+<p>
+ {' '}
+ В этих источниках света летучий металл (Hg) ртуть или <><SelectInput QuestionStore={5} QuestionIndex={1} /></> возбуждается
+ электронами, которые ускоряются в пространстве между двумя
+ <><SelectInput QuestionStore={5} QuestionIndex={2} /></> под действием приложенного к ним напряжения{' '}
+</p>
+
         </>
       ),
     },
@@ -443,6 +436,9 @@ export const SimulatorPageContent = {
             width={600}
             src={im4}
           />
+          <ul className='list-decimal list-outside'>
+            <QCheckBox index={6} />
+          </ul>
         </>
       ),
     },
@@ -456,11 +452,16 @@ export const SimulatorPageContent = {
             излучение возникает на полупроводниковом переходе в результате
             рекомбинации электронов и дырок
           </p>
-          <img
-            className='m-auto'
-            width={400}
-            src={im5}
-          />
+          <div className='flex w-1/2 justify-center items-center'>
+            <img
+              className=''
+              width={400}
+              src={im5}
+            />
+            <ol className='list-outside list-decimal'>
+              <MyDragList QuestionStore={7} />
+            </ol>
+          </div>
         </>
       ),
     },
@@ -485,18 +486,14 @@ export const SimulatorPageContent = {
           <h2 className='text-xl font-bold mb-2'>
             Основные типы светильников:
           </h2>
-          <div className='flex mb-10'>
+          <div className='flex justify-between mb-10'>
             <div>
               <b>Рисунок 1</b>
               <ol
                 id='list1'
-                className='mb-2 list-decimal list-inside'
+                className='mb-2 list-decimal text-left list-inside'
               >
-                {questions &&
-                  questions[0] &&
-                  questions[0].map((listItem) => (
-                    <li key={listItem.id}>{listItem.text}</li>
-                  ))}
+                <MyDragList QuestionStore={8} />
               </ol>
             </div>
             <figure className='ml-10'>
@@ -513,16 +510,7 @@ export const SimulatorPageContent = {
             <div>
               <b>Рисунок 2</b>
               <ol className='mb-2 list-decimal list-inside'>
-                {' '}
-                <li>Корпус светильника</li>
-                <li>Отражатель</li>
-                <li>Лампа</li>
-                <li>Рассеивающее или защитное стекло</li>
-                <li>Экранирующая решетка</li>
-                <li>Уплотнение по горлу колбы лампы</li>
-                <li>Неуплотненное соединение корпуса светильника со стеклом</li>
-                <li>Уплотненное соединение корпуса светильника со стеклом</li>
-                <li>Уплотнение колбы люминесцентной лампы в патроне</li>
+                <MyDragList QuestionStore={9} />{' '}
               </ol>{' '}
             </div>
             <figure className=''>
