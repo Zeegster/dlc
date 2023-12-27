@@ -112,9 +112,10 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
 };
 
 export const TextInput = ({ QuestionStore, index }) => {
-  const { QStore, QChecked } = useQuestionsStepper();
-  const [userValues, setUserValues] = useState([false, false, false]);
+  const { QStore, QChecked ,setDisabledState} = useQuestionsStepper();
+  const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
+  const [isDisabledLocally, setDisableLocally] = useState(true);
 
   const qStore = QStore[QuestionStore];
   // console.log('qStore:', qStore);
@@ -147,7 +148,8 @@ export const TextInput = ({ QuestionStore, index }) => {
   };
 
   useEffect(() => {
-    matches(QChecked);
+    
+    matches(QChecked)?setDisableLocally:'';
     console.log('QCHecked:', QChecked);
     console.log('qStore:', qStore);
     console.log('userVAlues:', userValues);
@@ -160,7 +162,7 @@ export const TextInput = ({ QuestionStore, index }) => {
       type='text'
       id={index}
       placeholder='Заполните пропуск'
-      className={`flex m-auto py-1 border-2 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 text-center ${
+      className={`flex m-auto py-1 border-2 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 text-center${isDisabledLocally?'bg-gray-300 disabled':''} ${
         QChecked === false
           ? 'border-gray-300'
           : checkedState[index] === undefined
@@ -176,17 +178,12 @@ export const TextInput = ({ QuestionStore, index }) => {
 export function QCheckBox({ index }) {
   const {
     QStore,
-    QChecked,
-    QCheckedState,
-    answer,
-    addUserAnswer,
-    addCorrectState,
+    QChecked
   } = useQuestionsStepper();
 
   // Хранилище ответов
   let qStore = QStore[index];
 
-  const [checked, setChecked] = useState(false);
   // Хранилище пользовательских данных
   const [userCheck, setUserCheck] = useState(
     Array.isArray(qStore) ? Array(qStore.length).fill(false) : []
@@ -213,7 +210,6 @@ export function QCheckBox({ index }) {
       return checkedState;
     }
   };
-  matches(checked);
   matches(QChecked);
 
   // Initialize userCheck as an empty array
@@ -225,7 +221,7 @@ export function QCheckBox({ index }) {
     console.log(userCheck);
     console.log('QCHecked:', QChecked);
     console.log(checkedState);
-  }, [userCheck, checked, checkedState]);
+  }, [userCheck, checkedState]);
 
   return (
     <>
@@ -268,35 +264,33 @@ export const MyDragList = ({ QuestionStore }) => {
 
   const { QStore, QChecked } = useQuestionsStepper();
   const qStoreCopy = [...QStore[QuestionStore]];
+
   let indexAnswer = qStoreCopy.findIndex((item) =>
     item.hasOwnProperty('answer')
   );
+  
+
   if (indexAnswer !== -1) {
+
     qStoreCopy.splice(indexAnswer, 1);
   }
-  console.log('AAAA SUKAAA', qStoreCopy);
   const qStore = shuffleArray(qStoreCopy);
 
   const [cardList, setCardList] = useState(qStore);
-  console.log('QSTORE SUKA = ', qStore);
 
   const [currentCard, setCurrentCard] = useState(null);
+  console.log("LOOK: ",cardList)
 
   useEffect(() => {
+
     setCardList(
       qStore.map((item, index) => ({
         ...item,
         order: index,
       }))
+
     );
 
-    // const newCardList = qStore.map((item, index) => ({
-    //   ...item,
-    //   order: index
-    // }));
-    // shuffleArray(newCardList);
-    // setCardList(newCardList);
-    console.log('QCHecked:', QChecked);
   }, []);
 
   let checkedState = [];
@@ -306,9 +300,10 @@ export const MyDragList = ({ QuestionStore }) => {
     }
     return arr1.every((value, index) => value === arr2[index]);
   };
+  console.log("LOOK@: ",cardList)
 
   const matches = (state) => {
-    console.log('MATCHES INIT');
+    // console.log('MATCHES INIT');
     if (state !== false) {
       console.log('State = ', state);
 
@@ -353,15 +348,12 @@ export const MyDragList = ({ QuestionStore }) => {
     setCurrentCard(card);
   }
   function dragLeaveHandler(e, card) {
-    e.target.style.background = 'white';
   }
 
   function dragEndHandler(e, card) {
-    e.target.style.background = 'white';
   }
   function dragOverHandler(e, card) {
     e.preventDefault();
-    e.target.style.background = 'lightgray';
   }
   function dropHandler(e, card) {
     e.preventDefault();
@@ -376,7 +368,6 @@ export const MyDragList = ({ QuestionStore }) => {
         return c;
       })
     );
-    e.target.style.background = 'white';
   }
 
   const sortCards = (a, b) => {
@@ -386,18 +377,18 @@ export const MyDragList = ({ QuestionStore }) => {
       return -1;
     }
   };
-  console.log(
-    'Cardlist = ',
-    cardList,
-    'Store NUM = ',
-    QuestionStore,
-    'Check array = ',
-    checkedState
-  );
+  // console.log(
+  //   'Cardlist = ',
+  //   cardList,
+  //   'Store NUM = ',
+  //   QuestionStore,
+  //   'Check array = ',
+  //   checkedState
+  // );
 
   return (
     <>
-      {' '}
+      {' '}<ul>
       {cardList.sort(sortCards).map((card, index) => (
         <li
           onDragStart={(e) => dragStartHandler(e, card)}
@@ -407,11 +398,21 @@ export const MyDragList = ({ QuestionStore }) => {
           onDrop={(e) => dropHandler(e, card)}
           key={index}
           draggable={true}
-          className='w-fit whitespace-nowrap p-2 border flex justify-start items-center m-4 cursor-grab'
+          className={`w-full p-2 border flex justify-start items-center m-4 cursor-grab ${
+        QChecked === false
+          ? 'border-gray-300'
+          : checkedState[index] === undefined
+          ? 'border-gray-300'
+          : checkedState[index]
+          ? 'border-green-100 bg-green-100 focus-visible:outline-green-1'
+          : 'border-red-100 bg-red-100 focus-visible:outline-red-100'
+      }`}
         >
           {card.text}
         </li>
+        
       ))}
+      </ul>
     </>
   );
 };

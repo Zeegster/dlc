@@ -12,29 +12,31 @@ export function VirtualStepper() {
   const handleNext = () => {
     if (activeStep < totalSteps - 1) {
       setActiveStep((cur) => cur + 1);
-      
-      QChecked===true?QCheckedState():""
+      QChecked?(QCheckedState(),setDisabledState()):QChecked
+
+
     }
   };
 
   const handlePrev = () => {
     if (activeStep > 0) {
       setActiveStep((cur) => cur - 1);
-      QChecked===true?QCheckedState():"";
+      QChecked?(QCheckedState(),setDisabledState()):QChecked
+
     }
   };
 
   const totalSteps = SimulatorPageContent.items.length;
 
   const activeItem = SimulatorPageContent.items[activeStep];
-  const { addCorrectState, clearAnswer,answer,QChecked,QCheckedState} = useQuestionsStepper();
+  const { addCorrectState, clearAnswer,answer,QChecked,QCheckedState,isDisabled,setDisabledState} = useQuestionsStepper();
 
-  const [isDisabled, setIsDisabled] = useState(false);
 
   
 
   const checkAnswers = () => {
     QCheckedState()
+    setDisabledState()
   };
 
   return (
@@ -70,6 +72,7 @@ export function VirtualStepper() {
         <CommonButton
           onClick={checkAnswers}
           text='Проверить ответ'
+          disabled={isDisabled}
         />
         <CommonButton
           onClick={handleNext}

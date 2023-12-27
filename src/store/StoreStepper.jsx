@@ -300,6 +300,14 @@ export const useQuestionsStepper = create(
         })
       );
     },
+    isDisabled: false,
+    setDisabledState: () => {
+      set(
+        produce((state) => {
+          state.isDisabled = !state.isDisabled;
+        })
+      );
+    },
 
     questionType: {},
     QType: (type) => set(produce((state) => (state.questionType = type))),

@@ -16,12 +16,15 @@ export const SimulatorPageContent = {
       id: 1,
       title: '1. Физические явления света',
       content: (
+
         <>
           <p className='mb-2'>
             {' '}
             Поведение света в виде электромагнитной волны наблюдается в таких
             физических явлениях:{' '}
           </p>{' '}
+          <MyDragList QuestionStore={9} />{' '}
+
           <ul className='list-disc ml-8 mb-2'>
             {' '}
             <li>- Дисперсия</li> <li>- Дифракция</li>{' '}
@@ -78,7 +81,7 @@ export const SimulatorPageContent = {
             </div>
             <ul className='list-inside list-decimal'>
               <p className='font-bold'>Определите явления</p>
-              <SelectInput QuestionStore={0} />
+              {/* <SelectInput QuestionStore={0} /> */}
             </ul>
           </div>
         </>
@@ -489,12 +492,9 @@ export const SimulatorPageContent = {
           <div className='flex justify-between mb-10'>
             <div>
               <b>Рисунок 1</b>
-              <ol
-                id='list1'
-                className='mb-2 list-decimal text-left list-inside'
-              >
+              
                 <MyDragList QuestionStore={8} />
-              </ol>
+              
             </div>
             <figure className='ml-10'>
               <figcaption>
@@ -509,17 +509,17 @@ export const SimulatorPageContent = {
           <div className='flex'>
             <div>
               <b>Рисунок 2</b>
-              <ol className='mb-2 list-decimal list-inside'>
+              
                 <MyDragList QuestionStore={9} />{' '}
-              </ol>{' '}
+             
             </div>
             <figure className=''>
               <figcaption>
                 <b>Рисунок 2</b>
               </figcaption>
               <img
-                width={400}
-                src={imageUrl}
+                width={500}
+                src={im7}
               />
             </figure>
           </div>
