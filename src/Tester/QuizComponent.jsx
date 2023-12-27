@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button, List, ListItem, Typography } from '@material-tailwind/react';
 import Xarrow from 'react-xarrows';
 import { useQuestionsStepper } from '../store/StoreStepper';
 
-const QuizComponent = ({ keys, values }) => {
+const QuizComponent = ({ QuestionIndex }) => {
+  console.log('START');
   const [selectedKey, setSelectedKey] = useState({ value: null, id: null });
   const [selectedValue, setSelectedValue] = useState({ value: null, id: null });
   const [drawnArrows, setDrawnArrows] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]); // New state variable
-  const { answer, addUserAnswer } = useQuestionsStepper();
+  const { answer, addUserAnswer, QStore } = useQuestionsStepper();
 
+  let keys = QStore[QuestionIndex].filter(q => q.hasOwnProperty('key')).map(q => q.key)
+  let values = QStore[QuestionIndex].filter(q => q.hasOwnProperty('value')).map(q => q.value)
+console.log(keys);
+console.log(values);
   // Get the matched pairs as key-value pairs
   const getMatchedPairsAsKeyValuePairs = () => {
     return matchedPairs.map((pair) => {
@@ -22,9 +27,17 @@ const QuizComponent = ({ keys, values }) => {
     const matchedPairIndex = matchedPairs.findIndex(
       (pair) => pair.key.id === id || pair.value.id === id
     );
+
+    console.log("SELECTED KEY",selectedKey);
+    console.log("SELECTED VALUE",selectedValue);
+
+    console.log("MATCHED PAIRS", matchedPairs);
+    console.log("MATCHED PAIR INDEX", matchedPairIndex);
     if (matchedPairIndex !== -1) {
       const newMatchedPairs = [...matchedPairs];
       newMatchedPairs.splice(matchedPairIndex, 1);
+      console.log("NEW MATCHED PAIRS", newMatchedPairs);
+
       setMatchedPairs(newMatchedPairs);
       const newDrawnArrows = [...drawnArrows];
       newDrawnArrows.splice(matchedPairIndex, 1);
@@ -34,7 +47,8 @@ const QuizComponent = ({ keys, values }) => {
     // Check if the item is part of a matched pair
     if (
       matchedPairs.some((pair) => pair.key.id === id || pair.value.id === id)
-    ) {
+      ) {
+      console.log(matchedPairs.some((pair) => pair.key.id === id || pair.value.id === id))
       return;
     }
     // Check the list property to prevent matching keys with keys and values with values
@@ -55,15 +69,17 @@ const QuizComponent = ({ keys, values }) => {
     }
     // Get the matched pairs as key-value pairs
     const matchedPairsKeyValuePairs = getMatchedPairsAsKeyValuePairs();
-    console.log(selectedKey.list, answer);
-    
+    console.log("MATCHED KEY AND VALUES TO SET ANSWER", matchedPairsKeyValuePairs,"/n",answer);
+
     // Check which list the item comes from and store it in the corresponding state variable
     
 
     addUserAnswer(matchedPairsKeyValuePairs);
+    
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+
     if (selectedKey.value && selectedValue.value) {
       setDrawnArrows([
         ...drawnArrows,
@@ -76,6 +92,7 @@ const QuizComponent = ({ keys, values }) => {
       ]);
       setSelectedKey({ value: null, id: null, list: null });
       setSelectedValue({ value: null, id: null, list: null });
+  
     }
   }, [selectedKey, selectedValue, answer]);
 
@@ -96,8 +113,8 @@ const QuizComponent = ({ keys, values }) => {
         <List className=''>
           {keys.map((key, index) => (
             <ListItem
-              className='active:border-blue-200 focus:border-blue-200
-               rounded-sm border-2 flex items-center justify-center p-2'
+              className='active:border-r-blue-200 focus:border-r-blue-200
+               rounded-sm border-2 border-r-4 rounded-r-xl flex items-center justify-center p-2'
               onClick={() => handleClick(key, 'key-' + index, 'key')}
               id={'key-' + index}
               key={index}
@@ -109,8 +126,8 @@ const QuizComponent = ({ keys, values }) => {
         <List>
           {values.map((value, index) => (
             <ListItem
-              className='active:border-blue-200 focus:border-blue-200
-               rounded-sm border-2 flex items-center justify-center p-2'
+              className='active:border-l-blue-200 focus:border-l-blue-200
+               rounded-sm border-2 border-l-4 rounded-l-xl flex items-center justify-center p-2'
               onClick={() => handleClick(value, 'value-' + index, 'value')}
               id={'value-' + index}
               key={index}
@@ -144,9 +161,3 @@ const QuizComponent = ({ keys, values }) => {
 
 export default QuizComponent;
 
-
-// if (list === 'key') {
-//   setSelectedKey({ value: item, id: id });
-// } else if (list === 'value') {
-//   setSelectedValue({ value: item, id: id });
-// }

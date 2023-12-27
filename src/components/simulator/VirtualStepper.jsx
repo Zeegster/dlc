@@ -5,7 +5,7 @@ import ProgressBar from '../ProgressBar';
 import { SimulatorPageContent } from '../../store/content/SimulatorPageContent';
 import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
-import { questions, useQuestionsStepper } from '../../store/StoreStepper';
+import {useQuestionsStepper } from '../../store/StoreStepper';
 
 export function VirtualStepper() {
   const [activeStep, setActiveStep] = React.useState(0);

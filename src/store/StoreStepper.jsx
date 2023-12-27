@@ -97,7 +97,16 @@ export const questions = [
 
 export const useQuestionsStepper = create(
   devtools((set) => ({
-    QStore: [
+    QStore: [[
+      { id: 0, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+      { id: 1, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+      { id: 2, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+      { id: 3, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+      { id: 4, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+      { id: 5, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+      { id: 6, answer: false, text:`ENTO ${Math.random()} RANDOM stroka` },
+      { id: 7, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
+    ],
       //QStore = 0
       [
         {
@@ -166,7 +175,7 @@ export const useQuestionsStepper = create(
         {
           id: 1,
           text: ['(Zn) цинка', '(Li) лития', '(Na) натрия'],
-          answer: 'натрия',
+          answer: '(Na) натрия',
         },
         {
           id: 2,

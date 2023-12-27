@@ -18,13 +18,16 @@ export const SimulatorPageContent = {
       content: (
 
         <>
+
+<QCheckBox index={0} />
+
           <p className='mb-2'>
             {' '}
             Поведение света в виде электромагнитной волны наблюдается в таких
             физических явлениях:{' '}
           </p>{' '}
-          <MyDragList QuestionStore={9} />{' '}
-
+          {/* <MyDragList QuestionStore={9} />{' '}
+<SelectInput QuestionStore={0} QuestionIndex={0} /> */}
           <ul className='list-disc ml-8 mb-2'>
             {' '}
             <li>- Дисперсия</li> <li>- Дифракция</li>{' '}

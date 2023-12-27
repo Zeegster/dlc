@@ -8,9 +8,9 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
   const [checkedState, setCheckedState] = useState([]);
 
   const handleSelectChange = (selectedIndex, selectedValue) => {
-    setUserValues(prevUserValues => ({
+    setUserValues((prevUserValues) => ({
       ...prevUserValues,
-      [selectedIndex]: selectedValue
+      [selectedIndex]: selectedValue,
     }));
   };
   const qStore = QStore[QuestionStore];
@@ -22,10 +22,8 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
     });
     setCheckedState(newCheckedState);
   };
-  
 
   useEffect(() => {
-
     if (QChecked !== false) {
       const newCheckedState = Object.keys(userValues).reduce((acc, curr) => {
         acc[curr] = userValues[curr] === qStore[parseInt(curr)].answer;
@@ -38,11 +36,10 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
     console.log('QUESTIONS :', qStore);
     console.log('User Values:', userValues);
   }, [QChecked, qStore, userValues]);
-  
-  
+
   if (QuestionIndex !== undefined) {
     const qItem = qStore[QuestionIndex];
-    console.log('YOYOYO - qItem',qItem);
+    console.log('YOYOYO - qItem', qItem);
     return (
       <select
         key={qItem.id}
@@ -80,9 +77,7 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
         >
           <select
             id={i}
-            onChange={(event) =>
-              handleSelectChange(i, event.target.value)
-            }   
+            onChange={(event) => handleSelectChange(i, event.target.value)}
             className={`block p-2 mb-2 border-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 ${
               QChecked === false
                 ? 'border-gray-300'
@@ -94,25 +89,25 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
             }`}
           >
             <option>Ваш ответ</option>
-         {q.text.map((option, j) => {
-           return (
-             <option
-               key={j}
-               value={option}
-             >
-               {option}
-             </option>
-           );
-         })}
+            {q.text.map((option, j) => {
+              return (
+                <option
+                  key={j}
+                  value={option}
+                >
+                  {option}
+                </option>
+              );
+            })}
           </select>
         </li>
       );
     });
-  } 
+  }
 };
 
 export const TextInput = ({ QuestionStore, index }) => {
-  const { QStore, QChecked ,setDisabledState} = useQuestionsStepper();
+  const { QStore, QChecked, setDisabledState } = useQuestionsStepper();
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
   const [isDisabledLocally, setDisableLocally] = useState(true);
@@ -148,8 +143,7 @@ export const TextInput = ({ QuestionStore, index }) => {
   };
 
   useEffect(() => {
-    
-    matches(QChecked)?setDisableLocally:'';
+    matches(QChecked) ? setDisableLocally : '';
     console.log('QCHecked:', QChecked);
     console.log('qStore:', qStore);
     console.log('userVAlues:', userValues);
@@ -162,7 +156,9 @@ export const TextInput = ({ QuestionStore, index }) => {
       type='text'
       id={index}
       placeholder='Заполните пропуск'
-      className={`flex m-auto py-1 border-2 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 text-center${isDisabledLocally?'bg-gray-300 disabled':''} ${
+      className={`flex m-auto py-1 border-2 text-sm text-gray-900 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 text-center${
+        isDisabledLocally ? 'bg-gray-300 disabled' : ''
+      } ${
         QChecked === false
           ? 'border-gray-300'
           : checkedState[index] === undefined
@@ -176,10 +172,7 @@ export const TextInput = ({ QuestionStore, index }) => {
 };
 
 export function QCheckBox({ index }) {
-  const {
-    QStore,
-    QChecked
-  } = useQuestionsStepper();
+  const { QStore, QChecked } = useQuestionsStepper();
 
   // Хранилище ответов
   let qStore = QStore[index];
@@ -226,28 +219,30 @@ export function QCheckBox({ index }) {
   return (
     <>
       {qStore.map((item, index) => (
-        <Checkbox
-          id={item.id}
-          type='checkbox'
-          value={item.answer}
-          checked={userCheck[index]}
-          onChange={(e) => handleCheck(e, index)}
-          key={index}
-          color={
-            QChecked === false
-              ? 'neutral'
-              : checkedState[index] !== false
-              ? 'success'
-              : 'error'
-          }
-          className={
-            QChecked === false
-              ? ''
-              : checkedState[index] === true
-              ? 'bg-green-100'
-              : 'bg-red-100'
-          }
-        />
+        <label key={index} className="cursor-pointer">
+          {item.text}
+          <Checkbox
+            id={item.id}
+            type='checkbox'
+            value={item.answer}
+            checked={userCheck[index]}
+            onChange={(e) => handleCheck(e, index)}
+            color={
+              QChecked === false
+                ? 'neutral'
+                : checkedState[index] !== false
+                ? 'success'
+                : 'error'
+            }
+            className={
+              QChecked === false
+                ? ''
+                : checkedState[index] === true
+                ? 'bg-green-100'
+                : 'bg-red-100'
+            }
+          />
+        </label>
       ))}{' '}
     </>
   );
@@ -268,10 +263,8 @@ export const MyDragList = ({ QuestionStore }) => {
   let indexAnswer = qStoreCopy.findIndex((item) =>
     item.hasOwnProperty('answer')
   );
-  
 
   if (indexAnswer !== -1) {
-
     qStoreCopy.splice(indexAnswer, 1);
   }
   const qStore = shuffleArray(qStoreCopy);
@@ -279,18 +272,15 @@ export const MyDragList = ({ QuestionStore }) => {
   const [cardList, setCardList] = useState(qStore);
 
   const [currentCard, setCurrentCard] = useState(null);
-  console.log("LOOK: ",cardList)
+  console.log('LOOK: ', cardList);
 
   useEffect(() => {
-
     setCardList(
       qStore.map((item, index) => ({
         ...item,
         order: index,
       }))
-
     );
-
   }, []);
 
   let checkedState = [];
@@ -300,7 +290,7 @@ export const MyDragList = ({ QuestionStore }) => {
     }
     return arr1.every((value, index) => value === arr2[index]);
   };
-  console.log("LOOK@: ",cardList)
+  console.log('LOOK@: ', cardList);
 
   const matches = (state) => {
     // console.log('MATCHES INIT');
@@ -347,11 +337,9 @@ export const MyDragList = ({ QuestionStore }) => {
   function dragStartHandler(e, card) {
     setCurrentCard(card);
   }
-  function dragLeaveHandler(e, card) {
-  }
+  function dragLeaveHandler(e, card) {}
 
-  function dragEndHandler(e, card) {
-  }
+  function dragEndHandler(e, card) {}
   function dragOverHandler(e, card) {
     e.preventDefault();
   }
@@ -388,30 +376,30 @@ export const MyDragList = ({ QuestionStore }) => {
 
   return (
     <>
-      {' '}<ul>
-      {cardList.sort(sortCards).map((card, index) => (
-        <li
-          onDragStart={(e) => dragStartHandler(e, card)}
-          onDragLeave={(e) => dragLeaveHandler(e)}
-          onDragEnd={(e) => dragEndHandler(e)}
-          onDragOver={(e) => dragOverHandler(e)}
-          onDrop={(e) => dropHandler(e, card)}
-          key={index}
-          draggable={true}
-          className={`w-full p-2 border flex justify-start items-center m-4 cursor-grab ${
-        QChecked === false
-          ? 'border-gray-300'
-          : checkedState[index] === undefined
-          ? 'border-gray-300'
-          : checkedState[index]
-          ? 'border-green-100 bg-green-100 focus-visible:outline-green-1'
-          : 'border-red-100 bg-red-100 focus-visible:outline-red-100'
-      }`}
-        >
-          {card.text}
-        </li>
-        
-      ))}
+      {' '}
+      <ul>
+        {cardList.sort(sortCards).map((card, index) => (
+          <li
+            onDragStart={(e) => dragStartHandler(e, card)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDragEnd={(e) => dragEndHandler(e)}
+            onDragOver={(e) => dragOverHandler(e)}
+            onDrop={(e) => dropHandler(e, card)}
+            key={index}
+            draggable={true}
+            className={`w-full p-2 border flex justify-start items-center m-4 cursor-grab ${
+              QChecked === false
+                ? 'border-gray-300'
+                : checkedState[index] === undefined
+                ? 'border-gray-300'
+                : checkedState[index]
+                ? 'border-green-100 bg-green-100 focus-visible:outline-green-1'
+                : 'border-red-100 bg-red-100 focus-visible:outline-red-100'
+            }`}
+          >
+            {card.text}
+          </li>
+        ))}
       </ul>
     </>
   );
