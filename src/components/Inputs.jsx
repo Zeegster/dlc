@@ -236,10 +236,7 @@ export function QCheckBox({ index }) {
             }
             className={
               QChecked === false
-                ? ''
-                : checkedState[index] === true
-                ? 'bg-green-100'
-                : 'bg-red-100'
+                ? 'border-2':'border-2'
             }
           />
         </label>
