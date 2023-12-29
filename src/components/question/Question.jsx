@@ -9,7 +9,7 @@ const Question = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const questions = useQuestions((state) => state.questions);
+  const questions = useQuestions((state) => state.questions[id]);
 
   const answerQuestion = useQuestions((state) => state.answerQuestion);
   const unCorrect = useQuestions((state) => state.unCorrect);
@@ -19,7 +19,7 @@ const Question = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswers, setShowAnswers] = useState(false);
 
-  const question = questions.find((q) => q.id == id);
+  // const question = questions.find((q) => q.id == id);
 
   const correctAnswerClass = 'bg-green-100 text-white';
   const wrongAnswerClass = 'bg-red-100 text-white';
@@ -32,7 +32,7 @@ const Question = () => {
     }
   };
 
-  if (!question) {
+  if (!questions) {
     return <div></div>;
   }
 
@@ -50,7 +50,7 @@ const Question = () => {
     }
 
     if (!answer.isCorrect) {
-      unCorrect(question);
+      unCorrect(questions);
     }
 
     if (!answer.isCorrect) {
@@ -67,14 +67,14 @@ const Question = () => {
       <div className='flex flex-col justify-between items-center h-screen'>
         <HeaderInner
           title='Выберите правильный вариант ответа'
-          subtitle={question.question}
+          subtitle={questions.question}
         />
-
+        {questions.content}
         {/* Условный рендер */}
         <div className='flex flex-col w-2/3 justify-center h-[50vh] cursor-pointer'>
           {showAnswers
             ? // Показать все варианты с подсветкой
-              question.options.map((option) => (
+              questions.options.map((option) => (
                 <div
                   key={option.id}
                   className={`${getAnswerClass(
@@ -85,12 +85,12 @@ const Question = () => {
                 </div>
               ))
             : // Обычный рендер без подсветки
-              question.options.map((option) => (
+              questions.options.map((option) => (
                 <div
                   className='text-black bg-blue-50 mb-2 mt-2 p-4 rounded-lg hover:bg-blue-700 '
                   onClick={() => {
                     setSelectedAnswer(option.id);
-                    handleAnswer(option, question);
+                    handleAnswer(option, questions);
                   }}
                   key={option.id}
                 >

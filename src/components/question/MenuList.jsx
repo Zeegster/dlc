@@ -10,7 +10,7 @@ const MenuList = () => {
     <>
       <ul className="flex flex-wrap max-w-4xl px-12">
         {questions.map((question) => (
-          <li className="w-1/4 transition-all duration-100 hover:scale-110 " key={question.id}>
+          <li className="w-1/4" key={question.id}>
             <MenuItem question={question} id={question.id} />
           </li>
         ))}
