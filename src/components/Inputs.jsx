@@ -3,7 +3,7 @@ import { Checkbox } from 'react-daisyui';
 import { useQuestionsStepper } from '../store/StoreStepper';
 import { useEffect, useState, useLayoutEffect, useRef } from 'react';
 
-export const SelectInput = ({ QuestionStore, QuestionIndex,StoreName }) => {
+export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
 const{QStore, checkCount,QChecked, isDisabled, reloadState, shouldReload}= useQuestionsStepper()
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
@@ -19,7 +19,7 @@ const{QStore, checkCount,QChecked, isDisabled, reloadState, shouldReload}= useQu
     });
   };
 
-  const handleSelectChange = (selectedIndex, selectedValue, event) => {
+  const handleSelectChange = (selectedIndex, selectedValue) => {
     setUserValues((prevUserValues) => ({
       ...prevUserValues,
       [selectedIndex]: selectedValue,
@@ -36,7 +36,6 @@ const{QStore, checkCount,QChecked, isDisabled, reloadState, shouldReload}= useQu
 
     } 
     if (shouldReload) {
-      console.log("RELOADED?", userValues,shouldReload);
       resetValues();
     }
   }, [QChecked, shouldReload]);
@@ -49,16 +48,16 @@ const{QStore, checkCount,QChecked, isDisabled, reloadState, shouldReload}= useQu
         key={qItem.id}
         id={qItem.id}
         onChange={(event) =>
-          handleSelectChange(event.target.id, event.target.value, event)
+          handleSelectChange(event.target.id, event.target.value)
         }
         className={`block p-2 mb-2 border-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 ${
           isDisabled ? 'cursor-not-allowed' : ''
         } focus:ring-blue-500 focus-visible:outline-blue-300 ${
           QChecked === false
             ? 'border-gray-300'
-            : checkedState[QuestionIndex] === undefined
+            : checkedState[qItem.id] === undefined
             ? 'border-gray-300'
-            : checkedState[QuestionIndex] === true
+            : checkedState[qItem.id] === true
             ? 'border-green-100 bg-green-100 focus-visible:outline-green-100 text-white'
             : 'border-red-100 bg-red-100 text-white focus-visible:outline-red-100'
         }`}
@@ -84,7 +83,7 @@ const{QStore, checkCount,QChecked, isDisabled, reloadState, shouldReload}= useQu
           <select
             id={i}
             disabled={isDisabled}
-            onChange={(event) => handleSelectChange(i, event.target.value,event)}
+            onChange={(event) => handleSelectChange(i, event.target.value)}
             className={`block p-2 mb-2 border-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 ${
               isDisabled ? 'cursor-not-allowed' : ''
             } ${
