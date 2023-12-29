@@ -3,7 +3,7 @@ import { Checkbox } from 'react-daisyui';
 import { useQuestionsStepper } from '../store/StoreStepper';
 import { useEffect, useState, useLayoutEffect, useRef } from 'react';
 
-export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
+export const SelectInput = ({ QuestionStore, QuestionIndex , classNames=''}) => {
   const {
     QStore,
     checkCount,
@@ -58,7 +58,7 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
         }
         className={`block p-2 mb-2 border-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 ${
           isDisabled ? 'cursor-not-allowed' : ''
-        } focus:ring-blue-500 focus-visible:outline-blue-300 ${
+        } focus:ring-blue-500 focus-visible:outline-blue-300 ${classNames} ${
           QChecked === false
             ? 'border-gray-300'
             : checkedState[qItem.id] === undefined
@@ -90,7 +90,7 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
             id={i}
             disabled={isDisabled}
             onChange={(event) => handleSelectChange(i, event.target.value)}
-            className={`block p-2 mb-2 border-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 ${
+            className={`block p-2 mb-2 border-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus-visible:outline-blue-300 ${classNames} ${
               isDisabled ? 'cursor-not-allowed' : ''
             } ${
               QChecked === false
@@ -120,7 +120,7 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
   }
 };
 
-export const TextInput = ({ QuestionStore, index = 0 }) => {
+export const TextInput = ({ QuestionStore, index = 0 , classNames=''}) => {
   const {
     QStore,
     QChecked,
@@ -174,7 +174,7 @@ export const TextInput = ({ QuestionStore, index = 0 }) => {
       id={index}
       value={(userValues[index]?.value) || ''}
       placeholder='Заполните пропуск'
-      className={` m-auto py-1 border-b-2 text-sm text-gray-900 border-gray-300 rounded-sm focus:ring-blue-500 focus-visible:outline-blue-300 text-center ${
+      className={` m-auto py-1 border-b-2 text-sm text-gray-900 border-gray-300 rounded-sm focus:ring-blue-500 focus-visible:outline-blue-300 text-center ${classNames} ${
         isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''
       } ${
         QChecked === false
@@ -184,12 +184,12 @@ export const TextInput = ({ QuestionStore, index = 0 }) => {
           : checkedState[index]
           ? 'border-green-100 bg-green-100 focus-visible:outline-green-100 text-white'
           : 'border-red-100 bg-red-100 text-white focus-visible:outline-red-100'
-      }`}
+      } `}
     />
   );
 };
 
-export function QCheckBox({ index }) {
+export function QCheckBox({ index ,classNames='', labelClassNames=''}) {
   const { QStore, QChecked, isDisabled, reloadState, setDisableButton } =
     useQuestionsStepper();
 
@@ -228,7 +228,7 @@ export function QCheckBox({ index }) {
       {qStore.map((item, index) => (
         <label
           key={index}
-          className='inline-flex items-center text-left cursor-pointer'
+          className={`inline-flex items-center text-left cursor-pointer ${labelClassNames}`}
         >
           <Checkbox
             id={item.id}
@@ -252,7 +252,7 @@ export function QCheckBox({ index }) {
                 : checkedState[index] !== false
                 ? 'border-2 !bg-green-100 text-black'
                 : 'border-2 !bg-red-100'
-            }`}
+            } ${classNames}`}
           />{' '}
           <p>{item.text}</p>
         </label>
@@ -261,7 +261,7 @@ export function QCheckBox({ index }) {
   );
 }
 
-export const MyDragList = ({ QuestionStore, height, width, styles }) => {
+export const MyDragList = ({ QuestionStore, listOneClassNames='' ,listTwoClassNames='', wrapperClassNames='' }) => {
   const { QStore, QChecked, isDisabled, shouldReload } = useQuestionsStepper();
   // const [staticList, setStaticList ] = useState([])
 
@@ -394,18 +394,15 @@ export const MyDragList = ({ QuestionStore, height, width, styles }) => {
       {' '}
       <div className='flex w-full justify-between h-min'>
         {qStoreCopy.find((q) => q.textorder) && (
-          <ul className='h-full flex flex-col justify-between items-center' style={styles?.listContainer}>
+          <ul className={`h-full flex flex-col justify-between items-center ${wrapperClassNames}`} >
             {qStoreCopy
               .filter((q) => q.textorder)
               .map((q, index) => {
                 return (
                   <li
                     key={q.id}
-                    style={{
-                    height: height ? height : "50px",
-                    ...styles?.listItem,
-                  }}
-                    className={`p-2 border flex justify-center items-center mb-2 h-[${height&&height?height:"50px"}] w-full text-sm cursor-grab ${
+                   
+                    className={`p-2 border flex justify-center items-center mb-2 h-fit w-full text-sm cursor-grab ${listOneClassNames} ${
                       QChecked === false
                         ? 'border-gray-300'
                         : checkedState[index] === undefined
@@ -413,7 +410,7 @@ export const MyDragList = ({ QuestionStore, height, width, styles }) => {
                         : checkedState[index]
                         ? 'border-green-100 bg-green-100 focus-visible:outline-green-1 cursor-not-allowed'
                         : 'border-red-100 bg-red-100 focus-visible:outline-red-100 cursor-not-allowed'
-                    }`}
+                    } `}
                   >
                     <span>{q.textorder}</span>
                   </li>
@@ -421,7 +418,7 @@ export const MyDragList = ({ QuestionStore, height, width, styles }) => {
               })}
           </ul>
         )}
-        <ul className=' h-full flex flex-col justify-around'>
+        <ul className={`h-full flex flex-col justify-between items-center ${wrapperClassNames}`} >
           {cardList.sort(sortCards).map((card, index) => (
             <li
               onDragStart={
@@ -433,7 +430,7 @@ export const MyDragList = ({ QuestionStore, height, width, styles }) => {
               onDrop={!isDisabled ? (e) => dropHandler(e, card) : null}
               key={index}
               draggable={true}
-              className={`p-2 border block justify-start items-center h-fit w-fit mb-2 text-sm cursor-grab ${
+              className={`p-2 border block justify-start items-center h-fit w-fit mb-2 text-sm cursor-grab ${listTwoClassNames} ${
                 QChecked === false
                   ? 'border-gray-300'
                   : checkedState[index] === undefined
