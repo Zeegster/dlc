@@ -5,39 +5,49 @@ import ProgressBar from '../ProgressBar';
 import { SimulatorPageContent } from '../../store/content/SimulatorPageContent';
 import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
-import {useQuestionsStepper } from '../../store/StoreStepper';
+import { useQuestionsStepper } from '../../store/StoreStepper';
 
 export function VirtualStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const totalSteps = SimulatorPageContent.items.length;
+
+  const activeItem = SimulatorPageContent.items[activeStep];
+  const {
+    QChecked,
+    QCheckedState,
+    isDisabled,
+    setDisabledState,
+    
+    setShouldReload,
+    setCheckCount,
+  } = useQuestionsStepper();
+
   const handleNext = () => {
     if (activeStep < totalSteps - 1) {
       setActiveStep((cur) => cur + 1);
-      QChecked?(QCheckedState(),setDisabledState()):QChecked
-
-
+      QChecked ? (QCheckedState(), setDisabledState()) : QChecked;
+      setCheckCount(0); // Reset checkCount
     }
   };
 
   const handlePrev = () => {
     if (activeStep > 0) {
       setActiveStep((cur) => cur - 1);
-      QChecked?(QCheckedState(),setDisabledState()):QChecked
-
+      QChecked ? (QCheckedState(), setDisabledState()) : QChecked;
+      setCheckCount(0); // Reset checkCount
     }
   };
 
-  const totalSteps = SimulatorPageContent.items.length;
-
-  const activeItem = SimulatorPageContent.items[activeStep];
-  const { addCorrectState, clearAnswer,answer,QChecked,QCheckedState,isDisabled,setDisabledState} = useQuestionsStepper();
-
-
-  
-
   const checkAnswers = () => {
-    QCheckedState()
-    setDisabledState()
+    setDisabledState();
+    QCheckedState();
+    setCheckCount();
+    
+    setShouldReload();    
   };
+
+
 
   return (
     <>
@@ -71,9 +81,10 @@ export function VirtualStepper() {
         />
         <CommonButton
           onClick={checkAnswers}
-          text='Проверить ответ'
-          disabled={isDisabled}
+          text={!isDisabled ? 'Проверить ответ' : 'Заново'}
+          // disabled={disableButton?true:false}
         />
+
         <CommonButton
           onClick={handleNext}
           text='Далее'
