@@ -120,7 +120,7 @@ export const SelectInput = ({ QuestionStore, QuestionIndex }) => {
   }
 };
 
-export const TextInput = ({ QuestionStore, index }) => {
+export const TextInput = ({ QuestionStore, index = 0 }) => {
   const {
     QStore,
     QChecked,
@@ -133,10 +133,9 @@ export const TextInput = ({ QuestionStore, index }) => {
   const [checkedState, setCheckedState] = useState([]);
 
   const qStore = QStore[QuestionStore];
-  // console.log('qStore:', qStore);
 
   const handleInput = (value, index) => {
-    let optimizedValue = value.toLowerCase().replace(/ /g, '');
+    const optimizedValue = value.toLowerCase().replace(/ /g, '');
     setUserValues((prev) => {
       const copy = [...prev];
       copy[index] = { index, value: optimizedValue };
@@ -144,34 +143,22 @@ export const TextInput = ({ QuestionStore, index }) => {
     });
   };
 
-  const matches = (state) => {
-    if (state !== false) {
-      const newCheckedState = userValues.map((s, index) => {
-        // Check if the user has typed anything
-        if (!s || !s.value) {
-          return false;
-        }
-        // Compare the user's input with the answer
-        if (qStore[index]) {
-          return s.value === qStore[index].answer;
-        } else {
-          return false;
-        }
-      });
-      console.log(newCheckedState);
-      setCheckedState(newCheckedState);
-    }
-  };
+
   const resetValues = () => {
     setUserValues([]);
     setCheckedState([]);
   };
+
   useEffect(() => {
-    matches(QChecked);
-    console.log('QCHecked:', QChecked);
-    console.log('qStore:', qStore);
-    console.log('userVAlues:', userValues);
-    console.log('checked:', checkedState);
+    if (QChecked !== false) {
+      const newCheckedState = userValues.map((s, index) => {
+        if (!s || !s.value) {
+          return false;
+        }
+        return qStore[index] ? s.value === qStore[index].answer : false;
+      });
+      setCheckedState(newCheckedState);
+    }
     if (!QChecked) {
       resetValues();
     }
@@ -185,9 +172,9 @@ export const TextInput = ({ QuestionStore, index }) => {
       }
       type='text'
       id={index}
-      value={(userValues[index] && userValues[index].value) || ''}
+      value={(userValues[index]?.value) || ''}
       placeholder='Заполните пропуск'
-      className={` m-auto py-1 border-b-2 text-sm text-gray-900 border-gray-300 rounded-sm focus:ring-blue-500 focus-visible:outline-blue-300 text-center${
+      className={` m-auto py-1 border-b-2 text-sm text-gray-900 border-gray-300 rounded-sm focus:ring-blue-500 focus-visible:outline-blue-300 text-center ${
         isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''
       } ${
         QChecked === false
