@@ -39,11 +39,11 @@ const MenuItem = ({ question, id }) => {
   }
 
   const colorClass = getColor(question.value)
-
+  console.log(unCorrectAnswer,correctAnswers);
   return (
     <div
-      className={`${filteredAnswer.indexOf(id) !== -1 ? 'hidden' : ' '} ${colorClass} p-12 mx-4 my-2 rounded shadow text-center text-blue-100 max-w-[254px] cursor-pointer`}
-      onClick={handleClick}
+      className={`${unCorrectAnswer.some((u)=> u.id===id) ? ` bg-red-400 cursor-not-allowed text-white` : correctAnswers.some((u)=> u.id===id) ? 'bg-green-400 text-white cursor-not-allowed' : `${colorClass} cursor-pointer text-blue-100 max-w-[254px] transition-all duration-100 hover:scale-110`}  p-12 mx-4 my-2 rounded shadow text-center`}
+      onClick={unCorrectAnswer.some((u)=> u.id===id) ? null : correctAnswers.some((u)=> u.id===id) ? null: handleClick}
     >
       <p className="font-bold">{question.value}</p>
     </div>
@@ -55,4 +55,3 @@ MenuItem.propTypes={
 
 }
 export default MenuItem;
-// p-12 mx-4 my-2 rounded shadow text-center text-blue-100 max-w-[254px]
