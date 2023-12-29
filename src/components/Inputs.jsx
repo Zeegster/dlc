@@ -199,7 +199,11 @@ export function QCheckBox({ index ,classNames='', labelClassNames=''}) {
   const [userCheck, setUserCheck] = useState(
     Array.isArray(qStore) ? Array(qStore.length).fill(false) : []
   );
-
+  useEffect(() => {
+    if (!QChecked) {
+      setUserCheck(Array.isArray(qStore) ? Array(qStore.length).fill(false) : []);
+    }
+  }, [QChecked]);
   const handleCheck = (event, index) => {
     // Create a copy of the userCheck array
     let updatedUserCheck = [...userCheck];
@@ -223,6 +227,8 @@ export function QCheckBox({ index ,classNames='', labelClassNames=''}) {
   };
   matches(QChecked);
 
+  
+
   return (
     <>
       {qStore.map((item, index) => (
@@ -234,6 +240,8 @@ export function QCheckBox({ index ,classNames='', labelClassNames=''}) {
             id={item.id}
             type='checkbox'
             value={item.answer}
+            checked={QChecked === false ? userCheck[index]:QChecked ===true? userCheck[index] :false}
+
             onChange={!isDisabled ? (e) => handleCheck(e, index) : null}
             color={
               QChecked === false
