@@ -3,110 +3,9 @@ import { produce } from 'immer';
 import { devtools } from 'zustand/middleware';
 // import { persist } from "zustand/middleware";
 
-export const questions = [
-  [
-    {
-      id: 0,
-      text: ['Дисперсия', 'Дифракция', 'Интерференция'],
-      answer: 'Дисперсия',
-    },
-    {
-      id: 1,
-      text: ['Дифракция', 'Интерференция', 'Дисперсия'],
-      answer: 'Дифракция',
-    },
-    {
-      id: 2,
-      text: ['Интерференция', 'Дифракция', 'Дисперсия'],
-      answer: 'Интерференция',
-    },
-  ],
-  [
-    {
-      id: 0,
-      answer: 'вт',
-    },
-    {
-      id: 1,
-      answer: 'силаизлучения',
-    },
-    {
-      id: 2,
-
-      answer: 'вт/м2',
-    },
-  ],
-  [
-    {
-      id: 0,
-      answer: 'люксметр',
-    },
-  ],
-  [
-    { id: 1, key: 'T' },
-    { id: 2, key: 'F' },
-    { id: 3, key: 'S' },
-    { id: 4, key: 'X0' },
-    { id: 5, key: 'Y0' },
-
-    { id: 4, value: 'Исходная точка X' },
-    { id: 3, value: 'Число оборотов' },
-    { id: 1, value: 'Вызов инструмента' },
-    { id: 5, value: 'Исходная точка Y' },
-    { id: 2, value: 'Подача' },
-
-    // Неупорядоченный словать ответов в формате text1: text2
-    // text1 и text2 - строки из полей text из двух предыдущих списков соответственно
-    {
-      answers: {
-        T: 'Вызов инструмента',
-        F: 'Подача',
-        S: 'Число оборотов',
-        X0: 'Исходная точка X',
-        Y0: 'Исходная точка Y',
-      },
-    },
-  ],
-  [
-    {
-      id: 0,
-      answer: '200',
-    },
-    {
-      id: 1,
-      answer: '50',
-    },
-    {
-      id: 2,
-      answer: 'прямыесолнечныелучи',
-    },
-  ],
-
-  // Упорядоченный список из верных ответов
-  [
-    { id: 0, check: true },
-    { id: 1, check: true },
-    { id: 2, check: true },
-    { id: 3, check: true },
-    { id: 4, check: true },
-    { id: 5, check: true },
-    { id: 6, check: false },
-    { id: 7, check: true },
-  ],
-];
-
 export const useQuestionsStepper = create(
   devtools((set) => ({
-    QStore: [[
-      { id: 0, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-      { id: 1, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-      { id: 2, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-      { id: 3, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-      { id: 4, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-      { id: 5, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-      { id: 6, answer: false, text:`ENTO ${Math.random()} RANDOM stroka` },
-      { id: 7, answer: true , text:`ENTO ${Math.random()} RANDOM stroka`},
-    ],
+    QStore: [
       //QStore = 0
       [
         {
@@ -241,21 +140,21 @@ export const useQuestionsStepper = create(
 
       //QStore = 9
       [
-        { id: 0, text: 'Корпус светильника' },
-        { id: 1, text: 'Отражатель' },
-        { id: 2, text: 'Лампа' },
-        { id: 3, text: 'Рассеивающее или защитное стекло' },
-        { id: 4, text: 'Экранирующая решетка' },
-        { id: 5, text: 'Уплотнение по горлу колбы лампы' },
+        { id: 0, textorder:"1", text: 'Корпус светильника' },
+        { id: 1, textorder:"2", text: 'Отражатель' },
+        { id: 2, textorder:"3", text: 'Лампа' },
+        { id: 3, textorder:"4", text: 'Рассеивающее или защитное стекло' },
+        { id: 4, textorder:"5", text: 'Экранирующая решетка' },
+        { id: 5, textorder:"6", text: 'Уплотнение по горлу колбы лампы' },
         {
-          id: 6,
+          id: 6, textorder:"7",
           text: 'Неуплотненное соединение корпуса светильника со стеклом',
         },
         {
-          id: 7,
+          id: 7, textorder:"8",
           text: 'Уплотненное соединение корпуса светильника со стеклом',
         },
-        { id: 8, text: 'Уплотнение колбы люминесцентной лампы в патроне' },
+        { id: 8, textorder:"9", text: 'Уплотнение колбы люминесцентной лампы в патроне' },
 
         // Неупорядоченный словать ответов в формате text1: text2
         // text1 и text2 - строки из полей text из двух предыдущих списков соответственно
@@ -317,7 +216,37 @@ export const useQuestionsStepper = create(
         })
       );
     },
-
+    checkCount:0,
+    setCheckCount: ()=>{
+      set(produce((state)=>{
+        state.checkCount = state.checkCount+1
+      }))
+    },
+    shouldReload:false,
+    setShouldReload: () => {
+      set(
+        produce((state) => {
+          state.shouldReload = state.checkCount % 2 === 0;
+        })
+      );
+     },
+     
+    reloadState:0,
+    setReloadState: () => {
+     set(
+       produce((state) => {
+         state.reloadState = state.reloadState + 1;
+       })
+     );
+    },
+    disableButton:true,
+    setDisableButton:  () => {
+      set(
+        produce((state) => {
+          state.disableButton = !state.disableButton;
+        })
+      );
+    },
     questionType: {},
     QType: (type) => set(produce((state) => (state.questionType = type))),
     answer: [],
