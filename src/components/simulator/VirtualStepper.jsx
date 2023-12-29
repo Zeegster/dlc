@@ -18,7 +18,7 @@ export function VirtualStepper() {
     QCheckedState,
     isDisabled,
     setDisabledState,
-    
+    shouldReload,
     setShouldReload,
     setCheckCount,
   } = useQuestionsStepper();
@@ -44,10 +44,7 @@ export function VirtualStepper() {
     QCheckedState();
     setCheckCount();
     
-    setShouldReload();    
   };
-
-
 
   return (
     <>
