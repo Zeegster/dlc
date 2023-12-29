@@ -2,13 +2,14 @@ import imageUrl from '../../assets/img/step11-2.jpg';
 import { im2, im3, im4, im5, im6, im7, im8 } from '../../assets/base64/stepper';
 
 import { i1 } from '../../assets/base64/infogragic';
-import { questions } from '../StoreStepper';
 import {
   SelectInput,
   TextInput,
   QCheckBox,
   MyDragList,
 } from '../../components/Inputs';
+import { useQuestions } from '../store';
+import { useQuestionsStepper } from '../storeStepper';
 
 export const SimulatorPageContent = {
   items: [
@@ -18,16 +19,18 @@ export const SimulatorPageContent = {
       content: (
 
         <>
+              <SelectInput QuestionStore={0}  />
 
-<QCheckBox index={0} />
+{/* <QCheckBox index={6} /> */}
 
           <p className='mb-2'>
             {' '}
             Поведение света в виде электромагнитной волны наблюдается в таких
             физических явлениях:{' '}
           </p>{' '}
-          {/* <MyDragList QuestionStore={9} />{' '}
-<SelectInput QuestionStore={0} QuestionIndex={0} /> */}
+
+          {/* <MyDragList QuestionStore={9} />{' '} */}
+{/* <SelectInput QuestionStore={0} QuestionIndex={0} /> */}
           <ul className='list-disc ml-8 mb-2'>
             {' '}
             <li>- Дисперсия</li> <li>- Дифракция</li>{' '}
@@ -84,7 +87,6 @@ export const SimulatorPageContent = {
             </div>
             <ul className='list-inside list-decimal'>
               <p className='font-bold'>Определите явления</p>
-              {/* <SelectInput QuestionStore={0} /> */}
             </ul>
           </div>
         </>
