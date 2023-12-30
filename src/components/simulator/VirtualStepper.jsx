@@ -6,6 +6,8 @@ import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
 import { useQuestionsStepper } from '../../store/StoreStepper';
 import { useNavigate } from 'react-router-dom';
+import { useQuestions } from '../../store/store';
+
 
 export function VirtualStepper() {
   const navigate = useNavigate();
@@ -17,9 +19,8 @@ export function VirtualStepper() {
     setDisabledState,
     shouldReload,
     setShouldReload,
-    setCheckCount,activeStep, setActiveStep
+    setCheckCount,activeStep, setActiveStep,answer, unCorrectAnswer
   } = useQuestionsStepper();
-
   const totalSteps = SimulatorPageContent.items.length;
 
   const activeItem = SimulatorPageContent.items[activeStep] || {};
@@ -54,9 +55,10 @@ export function VirtualStepper() {
   if (activeStep >= totalSteps) {
     navigate('/simresult');
   }
-  console.log(activeStep);
+  console.log('Stepper Step',activeStep);
+  console.log('Stepper answer',answer);
   
- }, [activeStep]);
+ }, [activeStep, answer]);
 
  
   return (

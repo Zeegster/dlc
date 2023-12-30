@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CommonButton from '../components/buttons/CommonButton';
 import { useQuestionsStepper } from '../store/StoreStepper';
+import { SimulatorPageContent } from '../store/content/SimulatorPageContent';
 
 function ResultPage() {
   const score = useScore((state) => state.score);
@@ -27,15 +28,13 @@ function ResultPage() {
 }
 
 function QuizResults({ timeSpent, score, questions }) {
-  const { setActiveStep, QCheckedState , QChecked } = useQuestionsStepper();
+  const { setActiveStep, QCheckedState , QChecked, answer, QStore, clearAnswer } = useQuestionsStepper();
 
   let navigate = useNavigate();
   const routeChange = () => {
     navigate('/');
   };
-  const correctAnswersLength = useQuestions(
-    (state) => state.correctAnswers
-  ).length;
+  const correctAnswersLength = answer.filter((value) => value.userAnswer === true).length;
 
   const correctAnswers = useQuestions((state) => state.correctAnswers);
   const unCorrectAnswer = useQuestions((state) => state.unCorrectAnswer);
@@ -44,6 +43,7 @@ function QuizResults({ timeSpent, score, questions }) {
     routeChange();
     setActiveStep(0);
     QChecked && QCheckedState();
+    clearAnswer()
   };
 
   return (
@@ -55,7 +55,7 @@ function QuizResults({ timeSpent, score, questions }) {
         <div className='bg-white shadow stats flex flex-row rounded-lg divide-x divide-gray-200'>
           <div className='flex flex-col p-4'>
             <div className='text-lg font-medium mb-2'>Правильных ответов</div>
-            <div className='text-xl font-bold'>{correctAnswersLength}</div>
+            <div className='text-xl font-bold'>{correctAnswersLength} из {QStore.length}</div>
           </div>
 
           <div className='flex flex-col p-4'>
@@ -63,7 +63,7 @@ function QuizResults({ timeSpent, score, questions }) {
             <div className='text-xl font-bold'>
               {Math.round(
                 (correctAnswersLength /
-                  (correctAnswersLength + unCorrectAnswer.length)) *
+                  (QStore.length)) *
                   100
               )}
               %
@@ -72,21 +72,12 @@ function QuizResults({ timeSpent, score, questions }) {
         </div>
 
         <ul className='divide-y divide-gray-200'>
-          {correctAnswers.map((q) => (
+          {answer.map((q,index) => (
             <li
-              key={q.id}
-              className='bg-green-100 p-4'
+              key={index}
+              className={`${q.userAnswer===true?'bg-green-100':'bg-red-100'}`}
             >
-              <strong className='font-medium'>{q.question}</strong>
-            </li>
-          ))}
-
-          {unCorrectAnswer.map((q) => (
-            <li
-              key={q.id}
-              className={'bg-red-100 p-4'}
-            >
-              <strong className='font-medium'>{q.question}</strong>
+              <strong className='font-medium'>{SimulatorPageContent.items[q.index].title}</strong>
             </li>
           ))}
         </ul>
@@ -112,35 +103,21 @@ QuizResults.propTypes = {
 
 export default ResultPage;
 
-function undefined({ timeSpent, score, correctAnswersLength }) {
-  return (
-    <div className='bg-white shadow stats flex flex-row rounded-lg divide-x divide-gray-200'>
-      <div className='flex flex-col p-4'>
-        <div className='text-lg font-medium mb-2'>Потраченное время</div>
-        <div className='text-xl font-bold'>{timeSpent} сек</div>
-      </div>
 
-      <div className='flex flex-col p-4'>
-        <div className='text-lg font-medium mb-2'>Заработано баллов</div>
-        <div className='text-xl font-bold'>{score}</div>
-      </div>
-
-      <div className='flex flex-col p-4'>
-        <div className='text-lg font-medium mb-2'>Правильных ответов</div>
-        <div className='text-xl font-bold'>{correctAnswersLength}</div>
-      </div>
-
-      <div className='flex flex-col p-4'>
-        <div className='text-lg font-medium mb-2'>Процент правильных</div>
-        <div className='text-xl font-bold'>
-          {Math.round(
-            (correctAnswersLength /
-              (correctAnswersLength + unCorrectAnswer.length)) *
-              100
-          )}
-          %
-        </div>
-      </div>
-    </div>
-  );
-}
+{/* <li
+key={q.id}
+className='collapse collapse-arrow rounded-md bg-white'
+>
+<input
+  type='checkbox'
+  name='my-accordion'
+/>
+<div
+  className={`collapse-title text-xl font-medium ${
+    q.userAnswer === true ? 'bg-green-100' : 'bg-red-100'
+  }`}
+>
+  {SimulatorPageContent.items[q.index].title}
+</div>
+<div className='collapse-content '></div>
+</li> */}
