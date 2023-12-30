@@ -12,7 +12,7 @@ import HomePageButton from "../components/buttons/HomePageButton";
 const QuestionPage = () => {
 
   const navigate = useNavigate();
-  const questions = useQuestions((state) => state.questions);
+  const questions = useQuestions((state) => state.QStore);
   const startTimer = useTimer(state => state.startTimer);
   const currentScore = useScore(state => state.score);
   const attempt = useScore(state => state.attempt);

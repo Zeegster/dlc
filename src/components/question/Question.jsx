@@ -9,7 +9,7 @@ const Question = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const questions = useQuestions((state) => state.questions[id]);
+  const questions = useQuestions((state) => state.QStore[id]);
 
   const answerQuestion = useQuestions((state) => state.answerQuestion);
   const unCorrect = useQuestions((state) => state.unCorrect);

@@ -2,7 +2,7 @@ import MenuItem from "./MenuItem";
 import { useQuestions, useScore } from "../../store/store";
 
 const MenuList = () => {
-  const questions = useQuestions((state) => state.questions);
+  const questions = useQuestions((state) => state.QStore);
   const score = useScore((state) => state.score);
   const attempt = useScore((state) => state.attempt);
 
