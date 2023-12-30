@@ -7,7 +7,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Question from "./components/question/Question";
 import ResultPage from "./pages/ResultPage";
 import Tester from "./Tester/ Tester.jsx";
-
+import SimulatorResultPage from "./pages/SimulatorResultPage";
 
 function App  ()  {
   return (
@@ -20,6 +20,8 @@ function App  ()  {
         <Route path="/question/:id" element={<Question />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/tester" element={<Tester />} />
+        <Route path="/simresult" element={<SimulatorResultPage />} />
+
       </Routes>
     </HashRouter>
   );

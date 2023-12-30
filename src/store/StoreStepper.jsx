@@ -292,5 +292,8 @@ export const useQuestionsStepper = create(
         })
       );
     },
-  }))
+    activeStep:0,
+    setActiveStep: (step) => set({ activeStep: step }),
+  }
+  ))
 );
