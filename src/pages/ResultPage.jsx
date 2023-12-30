@@ -7,7 +7,7 @@ import CommonButton from '../components/buttons/CommonButton';
 
 function ResultPage() {
   const score = useScore((state) => state.score);
-  const questions = useQuestions((state) => state.questions);
+  const questions = useQuestions((state) => state.QStore);
 
   const { timer } = useTimer();
 
@@ -15,14 +15,14 @@ function ResultPage() {
     <div className='text-black'>
       <QuizResults
         score={score}
-        totalQuestions={12}
+        totalQuestions={questions.length}
         timeSpent={timer}
       />
     </div>
   );
 }
 
-function QuizResults({ timeSpent, score }) {
+function QuizResults({ timeSpent, score ,totalQuestions}) {
   let navigate = useNavigate();
   const routeChange = () => {
     navigate('/');
@@ -61,6 +61,10 @@ function QuizResults({ timeSpent, score }) {
           </div>
 
           <div className='flex flex-col p-4'>
+            <div className='text-lg font-medium mb-2'>Всего вопросов</div>
+            <div className='text-xl font-bold'>{totalQuestions}</div>
+          </div>
+          <div className='flex flex-col p-4'>
             <div className='text-lg font-medium mb-2'>Правильных ответов</div>
             <div className='text-xl font-bold'>{correctAnswersLength}</div>
           </div>
@@ -88,9 +92,9 @@ function QuizResults({ timeSpent, score }) {
             </li>
           ))}
 
-          {unCorrectAnswer.map((q) => (
+          {unCorrectAnswer.map((q,index) => (
             <li
-              key={q.id}
+              key={index}
               className={'bg-red-100 p-4'}
             >
               <strong className='font-medium'>{q.question}</strong>

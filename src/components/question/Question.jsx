@@ -4,17 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import HeaderInner from '../HeaderInner';
 import { useQuestions, useScore } from '../../store/store';
 import CommonButton from '../buttons/CommonButton';
+import { SelectInput, TextInput, QCheckBox, MyDragList } from '../Inputs';
 
 const Question = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { QStore, answerQuestion, unCorrect } = useQuestions();
+  const questions = QStore[id];
 
-  const questions = useQuestions((state) => state.QStore[id]);
-
-  const answerQuestion = useQuestions((state) => state.answerQuestion);
-  const unCorrect = useQuestions((state) => state.unCorrect);
-
-  const getScore = useScore((state) => state.getScore);
+  const { getScore } = useScore();
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswers, setShowAnswers] = useState(false);
@@ -72,8 +70,8 @@ const Question = () => {
         {questions.content}
         {/* Условный рендер */}
         <div className='flex flex-col w-2/3 justify-center h-[50vh] cursor-pointer'>
-          {showAnswers
-            ? // Показать все варианты с подсветкой
+          {showAnswers ?  (
+              // Показать все варианты с подсветкой
               questions.options.map((option) => (
                 <div
                   key={option.id}
@@ -84,19 +82,43 @@ const Question = () => {
                   {option.text}
                 </div>
               ))
-            : // Обычный рендер без подсветки
-              questions.options.map((option) => (
-                <div
-                  className='text-black bg-blue-50 mb-2 mt-2 p-4 rounded-lg hover:bg-blue-700 '
-                  onClick={() => {
-                    setSelectedAnswer(option.id);
-                    handleAnswer(option, questions);
-                  }}
-                  key={option.id}
-                >
-                  {option.text}
-                </div>
-              ))}
+            )
+           : (
+            questions.type == 'select' ? (
+              <SelectInput
+                QuestionStore={id}
+                Store={useQuestions}
+              />
+            ) : questions.type == 'input' ? (
+              <TextInput
+                QuestionStore={id}
+                Store={useQuestions}
+              />
+            ) : questions.type == 'checkbox' ? (
+              <QCheckBox
+                index={id}
+                Store={useQuestions}
+              />
+            ) : questions.type == 'draglist' ? (
+              <MyDragList
+                QuestionStore={id}
+                Store={useQuestions}
+              />
+            ) :
+            // Обычный рендер без подсветки
+            questions.options.map((option) => (
+              <div
+                className='text-black bg-blue-50 mb-2 mt-2 p-4 rounded-lg hover:bg-blue-700 '
+                onClick={() => {
+                  setSelectedAnswer(option.id);
+                  handleAnswer(option, questions);
+                }}
+                key={option.id}
+              >
+                {option.text}
+              </div>
+            ))
+          )}
         </div>
 
         <div className='w-full h-14 bg-blue-100 flex justify-center py-1'>

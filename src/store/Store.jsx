@@ -14,7 +14,7 @@ export const useQuestions = create((set) => ({
         { id: 4, text: "Контур", isCorrect: 0 },
       ],
       content:
-      <div className="bg-red">
+      <div className="bg-red-100">
           <h3>NEW CONTENT</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati harum deleniti quas nihil numquam dolores doloremque vero labore aut amet! Debitis porro at quasi omnis officiis laudantium ad, velit voluptatibus.</p>
       </div>
