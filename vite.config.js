@@ -35,18 +35,7 @@ export default defineConfig({
     outDir,
     emptyOutDir: true,
     chunkSizeWarningLimit: 2500,
-    rollupOptions: {
-      
-      input: {
-        main: resolve(root, 'index.html'),
-        module1: resolve(root, 'module1', 'index.html'),
-        module2: resolve(root, 'module2', 'index.html'),
-        module3: resolve(root, 'module3', 'index.html'),
-        
-      },
-      output: {
-      },
-    },
+    
   },
   resolve: {
   
