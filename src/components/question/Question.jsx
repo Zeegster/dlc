@@ -44,7 +44,7 @@ const Question = () => {
 
   function handleAnswer(answer, question) {
     
-    if (answer.isCorrect ) {
+    if (answer.isCorrect || answer!==false) {
       answerQuestion(question);
       getScore(question.value);
       useScore.setState((state) => ({
@@ -53,7 +53,7 @@ const Question = () => {
       console.log('CORRECT ANSWER');
     }
 
-    if (!answer.isCorrect) {
+    if (!answer.isCorrect|| answer===false) {
       unCorrect(questions);
       useScore.setState((state) => ({
         attempt: state.attempt - 1,
@@ -63,30 +63,13 @@ const Question = () => {
 
     handleSubmit();
   }
-  function handleComponentAnswer() {
-    setUserAnswer(answer) 
-    if (userAnswer) {
-      answerQuestion(questions);
-      getScore(questions.value);
-      useScore.setState((state) => ({
-        attempt: state.attempt - 1,
-      }));
-      console.log('CORRECT ANSWER');
-    }
-
-    if (!userAnswer) {
-      unCorrect(questions);
-      useScore.setState((state) => ({
-        attempt: state.attempt - 1,
-      }));
-      console.log('UNCORRECT ANSWER');
-    }
-  }
+  
+  
   useEffect(() => {
-    console.log('UseEffect', QChecked, answer, correctAnswers, unCorrectAnswer);
-    isDisabled&&setUserAnswer(answer)&&handleComponentAnswer
+    console.log('UseEffect','Correct',correctAnswers,' unCorrect', unCorrectAnswer);
+    QChecked&&setUserAnswer(answer);
     console.log('UseEffect2', userAnswer);
-  }, [ userAnswer, answer, correctAnswers, unCorrectAnswer]);
+  }, [ QChecked,userAnswer, answer, correctAnswers, unCorrectAnswer]);
 
   return (
     <>
@@ -155,8 +138,7 @@ const Question = () => {
                 setDisabledState(),
                 QCheckedState(),
                 setSelectedAnswer(questions.id),
-                handleComponentAnswer()
-
+                handleAnswer(answer, questions)
               )}
               text={'Проверить'}
             />
