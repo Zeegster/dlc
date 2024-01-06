@@ -1,6 +1,7 @@
 import MenuItem from "./MenuItem";
 import { useQuestions, useScore } from "../../store/store";
-
+import { useQuestionsStepper } from "../../store/StoreStepper";
+import { useEffect } from "react";
 const MenuList = () => {
   const questions = useQuestions((state) => state.QStore);
   const score = useScore((state) => state.score);

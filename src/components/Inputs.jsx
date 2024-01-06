@@ -287,7 +287,7 @@ export function QCheckBox({
             id={item.id}
             type='checkbox'
             value={item.answer}
-            checked={
+            defaultChecked={
               QChecked === false
                 ? userCheck[index]
                 : QChecked === true

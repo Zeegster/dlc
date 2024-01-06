@@ -7,8 +7,15 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Question from "./components/question/Question";
 import ResultPage from "./pages/ResultPage";
 import SimulatorResultPage from "./pages/SimulatorResultPage"
+import { useQuestionsStepper } from "./store/StoreStepper.jsx";
+import { useEffect } from "react";
 
 const App = () => {
+  const{QChecked, isDisabled}=useQuestionsStepper()
+useEffect(() => {
+  console.log(QChecked,isDisabled)
+  
+}, [QChecked,isDisabled]);
   return (
     <HashRouter>
       <Routes>

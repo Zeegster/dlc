@@ -70,9 +70,14 @@ const Question = () => {
     setSelectedAnswer(questions.id)
 
   }
+  function handleClick () {
+    navigate('/question')
+    QChecked&&QCheckedState()
+    isDisabled&&setDisabledState()
+
+  }
   useEffect(() => {
-    console.log('UseEffect', QChecked, answer, correctAnswers, unCorrectAnswer);
-    console.log('UseEffect2', userAnswer);
+    console.log('UseEffect', QChecked, correctAnswers, unCorrectAnswer);
   }, [ userAnswer, answer, correctAnswers, unCorrectAnswer]);
 
   return (
@@ -144,7 +149,7 @@ const Question = () => {
           )}
           {selectedAnswer && (
             <CommonButton
-              onClick={() => navigate('/question')}
+              onClick={() => handleClick()}
               text={'Ответить'}
             />
           )}
