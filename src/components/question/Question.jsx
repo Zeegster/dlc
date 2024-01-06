@@ -44,7 +44,7 @@ const Question = () => {
 
   function handleAnswer(answer, question) {
     
-    if (answer.isCorrect || answer!==false) {
+    if (answer.isCorrect ) {
       answerQuestion(question);
       getScore(question.value);
       useScore.setState((state) => ({
@@ -53,7 +53,7 @@ const Question = () => {
       console.log('CORRECT ANSWER');
     }
 
-    if (!answer.isCorrect|| answer===false) {
+    if (!answer.isCorrect) {
       unCorrect(questions);
       useScore.setState((state) => ({
         attempt: state.attempt - 1,
@@ -66,10 +66,9 @@ const Question = () => {
   
   
   useEffect(() => {
-    console.log('UseEffect','Correct',correctAnswers,' unCorrect', unCorrectAnswer);
-    QChecked&&setUserAnswer(answer);
+    console.log('UseEffect', QChecked, answer, correctAnswers, unCorrectAnswer);
     console.log('UseEffect2', userAnswer);
-  }, [ QChecked,userAnswer, answer, correctAnswers, unCorrectAnswer]);
+  }, [ userAnswer, answer, correctAnswers, unCorrectAnswer]);
 
   return (
     <>
@@ -137,8 +136,7 @@ const Question = () => {
               onClick={() => (
                 setDisabledState(),
                 QCheckedState(),
-                setSelectedAnswer(questions.id),
-                handleAnswer(answer, questions)
+                setSelectedAnswer(questions.id)
               )}
               text={'Проверить'}
             />

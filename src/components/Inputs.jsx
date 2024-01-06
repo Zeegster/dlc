@@ -1,18 +1,24 @@
 import { Checkbox } from 'react-daisyui';
-import { useQuestions } from '../store/store';
+import { useQuestions, useScore } from '../store/store';
 import { useQuestionsStepper } from '../store/StoreStepper';
-import { useEffect, useState, } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SelectInput = ({
   QuestionStore,
   QuestionIndex,
   classNames = '',
-  Store=useQuestionsStepper
+  Store = useQuestionsStepper,
 }) => {
-  const {QStore} = Store()
+  const { QStore } = Store();
 
-  const { QChecked, isDisabled, activeStep ,answerQuestion,
-    unCorrect,addUserAnswer} = useQuestionsStepper();
+  const {
+    QChecked,
+    isDisabled,
+    activeStep,
+    answerQuestion,
+    unCorrect,
+    addUserAnswer,
+  } = useQuestionsStepper();
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
   const qStore = QStore[QuestionStore];
@@ -32,7 +38,6 @@ export const SelectInput = ({
       ...prevUserValues,
       [selectedIndex]: selectedValue,
     }));
-    
   };
 
   useEffect(() => {
@@ -41,15 +46,20 @@ export const SelectInput = ({
         acc[curr] = userValues[curr] === qStore[parseInt(curr)].answer;
         return acc;
       }, {});
-      console.log(newCheckedState)
+      console.log(newCheckedState);
       setCheckedState(newCheckedState);
 
       if (Object.keys(newCheckedState).length === 0) {
         addUserAnswer(QuestionStore, false);
       } else {
-      const allTrue = Object.values(newCheckedState).every((value) => value === true);
-      allTrue?addUserAnswer(QuestionStore,allTrue):addUserAnswer(QuestionStore,allTrue)}
-  }
+        const allTrue = Object.values(newCheckedState).every(
+          (value) => value === true
+        );
+        allTrue
+          ? addUserAnswer(QuestionStore, allTrue)
+          : addUserAnswer(QuestionStore, allTrue);
+      }
+    }
     if (!QChecked) {
       resetValues();
     }
@@ -129,16 +139,15 @@ export const SelectInput = ({
   }
 };
 
-export const TextInput = ({ QuestionStore, index = 0, classNames = '',  Store=useQuestionsStepper
+export const TextInput = ({
+  QuestionStore,
+  index = 0,
+  classNames = '',
+  Store = useQuestionsStepper,
 }) => {
-  const {QStore} = Store()
-  const {
-    QChecked,
-    setDisabledState,
-    isDisabled,
-    addUserAnswer,
-    checkCount,
-  } = useQuestionsStepper();
+  const { QStore } = Store();
+  const { QChecked, setDisabledState, isDisabled, addUserAnswer, checkCount } =
+    useQuestionsStepper();
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
 
@@ -168,11 +177,16 @@ export const TextInput = ({ QuestionStore, index = 0, classNames = '',  Store=us
       });
       setCheckedState(newCheckedState);
 
-      if(Object.values(newCheckedState).length === 0){
-        addUserAnswer(QuestionStore,false)
-      }else{
-      const allTrue = Object.values(newCheckedState).every((value) => value === true);
-      allTrue?addUserAnswer(QuestionStore,allTrue):addUserAnswer(QuestionStore,allTrue)}
+      if (Object.values(newCheckedState).length === 0) {
+        addUserAnswer(QuestionStore, false);
+      } else {
+        const allTrue = Object.values(newCheckedState).every(
+          (value) => value === true
+        );
+        allTrue
+          ? addUserAnswer(QuestionStore, allTrue)
+          : addUserAnswer(QuestionStore, allTrue);
+      }
     }
     if (!QChecked) {
       resetValues();
@@ -204,12 +218,15 @@ export const TextInput = ({ QuestionStore, index = 0, classNames = '',  Store=us
   );
 };
 
-export function QCheckBox({ index ,classNames='', labelClassNames='',
-Store=useQuestionsStepper
+export function QCheckBox({
+  index,
+  classNames = '',
+  labelClassNames = '',
+  Store = useQuestionsStepper,
 }) {
-  const {QStore} = Store()
+  const { QStore } = Store();
 
-  const {  QChecked, isDisabled, addUserAnswer, setDisableButton } =
+  const { QChecked, isDisabled, addUserAnswer, setDisableButton } =
     useQuestionsStepper();
 
   // Хранилище ответов
@@ -220,14 +237,19 @@ Store=useQuestionsStepper
   );
   useEffect(() => {
     if (!QChecked) {
-      setUserCheck(Array.isArray(qStore) ? Array(qStore.length).fill(false) : []);
+      setUserCheck(
+        Array.isArray(qStore) ? Array(qStore.length).fill(false) : []
+      );
     }
-    if (QChecked){
-      if(Object.values(userCheck).length === 0){
-        addUserAnswer(index,false)
-      } else{
-      const allTrue = Object.values(checkedState).every((value) => value === true);
-      allTrue?addUserAnswer(index,allTrue):addUserAnswer(index,allTrue)}
+    if (QChecked) {
+      if (Object.values(userCheck).length === 0) {
+        addUserAnswer(index, false);
+      } else {
+        const allTrue = Object.values(checkedState).every(
+          (value) => value === true
+        );
+        allTrue ? addUserAnswer(index, allTrue) : addUserAnswer(index, allTrue);
+      }
     }
   }, [QChecked]);
   const handleCheck = (event, index) => {
@@ -248,15 +270,11 @@ Store=useQuestionsStepper
           ? { ...(checkedState[index] = true) }
           : { ...(checkedState[index] = false) };
       });
-      
+
       return checkedState;
-      
     }
-    
   };
   matches(QChecked);
-
-  
 
   return (
     <>
@@ -269,8 +287,13 @@ Store=useQuestionsStepper
             id={item.id}
             type='checkbox'
             value={item.answer}
-            checked={QChecked === false ? userCheck[index]:QChecked ===true? userCheck[index] :false}
-
+            checked={
+              QChecked === false
+                ? userCheck[index]
+                : QChecked === true
+                ? userCheck[index]
+                : false
+            }
             onChange={!isDisabled ? (e) => handleCheck(e, index) : null}
             color={
               QChecked === false
@@ -303,18 +326,20 @@ export const MyDragList = ({
   listOneClassNames = '',
   listTwoClassNames = '',
   wrapperClassNames = '',
-  Store=useQuestionsStepper
-
+  Store = useQuestionsStepper,
 }) => {
-  const {QStore} = Store()
-  const {  QChecked, isDisabled,addUserAnswer,answer } = useQuestionsStepper();
+  const { QStore } = Store();
+  const { answerQuestion, unCorrect } = useQuestions();
+  const { getScore } = useScore();
+  const { QChecked, isDisabled, addUserAnswer, answer } = useQuestionsStepper();
   // const [staticList, setStaticList ] = useState([])
-// console.log(QStore[QuestionStore])
-let qStoreCopy=[]
-  if(Store===useQuestionsStepper){
-  qStoreCopy = [...QStore[QuestionStore]]}else{
-    qStoreCopy = [...QStore[QuestionStore].options]
-  };
+  // console.log(QStore[QuestionStore])
+  let qStoreCopy = [];
+  if (Store === useQuestionsStepper) {
+    qStoreCopy = [...QStore[QuestionStore]];
+  } else {
+    qStoreCopy = [...QStore[QuestionStore].options];
+  }
 
   let indexAnswer = qStoreCopy.findIndex((item) =>
     item.hasOwnProperty('answer')
@@ -336,8 +361,6 @@ let qStoreCopy=[]
   const [cardList, setCardList] = useState(qStore);
   const [currentCard, setCurrentCard] = useState(null);
   useEffect(() => {
-    console.log('LOOOKK',answer);
-
     if (!QChecked) {
       const shuffledList = shuffleArray([...qStoreCopy]);
       setCardList(
@@ -347,18 +370,38 @@ let qStoreCopy=[]
         }))
       );
     }
-    if (QChecked){
-
-      if(Object.values(checkedState).length === 0){
-        addUserAnswer(QuestionStore,false)
-      } else{
-
-      const allTrue = Object.values(checkedState).every((value) => value === true);
-      allTrue?addUserAnswer(QuestionStore,allTrue):addUserAnswer(QuestionStore,allTrue)
+    if (QChecked) {
+      if (Object.values(checkedState).length === 0) {
+        addUserAnswer(QuestionStore, false);
+      }
+      if (
+        Store === useQuestions &&
+        Object.values(checkedState).every((value) => value === true)
+      ) {
+        answerQuestion(QStore[QuestionStore]);
+        getScore(QStore[QuestionStore].value);
+        useScore.setState((state) => ({
+          attempt: state.attempt - 1,
+        }));
+        console.log('CORRECT ANSWER');
+      }
+      if (
+        Store === useQuestions &&
+        Object.values(checkedState).every((value) => value === false)
+      ) {
+        unCorrect(QStore[QuestionStore]);
+        useScore.setState((state) => ({
+          attempt: state.attempt - 1,
+        }));
+        console.log('UNCORRECT ANSWER');
+      } else {
+        const allTrue = Object.values(checkedState).every(
+          (value) => value === true
+        );
+        addUserAnswer(QuestionStore, allTrue);
+      }
     }
-
-    }
-  }, [ QChecked, addUserAnswer]);
+  }, [QChecked, addUserAnswer]);
 
   const compareOrder = (arr1, arr2) => {
     if (arr1.length !== arr2.length) {
@@ -370,7 +413,6 @@ let qStoreCopy=[]
   const matches = (state) => {
     // console.log('MATCHES INIT');
     if (state !== false && currentCard) {
-
       // Функция сортировки списков по полю order
       const sortCards = (a, b) => {
         if (a.order > b.order) {
@@ -382,10 +424,13 @@ let qStoreCopy=[]
       // Создаем отсортированный список для дальнейшего сравнения
       const sortedcardList = cardList.sort(sortCards);
       // Проверка соответствия
-      const answers = Store=== useQuestions? QStore[QuestionStore].options.find((item)=>item.hasOwnProperty('answer')
-      ).answer :QStore[QuestionStore].find((item) =>
-        item.hasOwnProperty('answer')
-      ).answer;
+      const answers =
+        Store === useQuestions
+          ? QStore[QuestionStore].options.find((item) =>
+              item.hasOwnProperty('answer')
+            ).answer
+          : QStore[QuestionStore].find((item) => item.hasOwnProperty('answer'))
+              .answer;
 
       // Use the compareOrder function to compare the order of elements
       const isOrderSame = compareOrder(
@@ -402,7 +447,7 @@ let qStoreCopy=[]
           checkedState[index] = item.text === answers[index];
         });
       }
-      
+
       return checkedState;
     }
   };
