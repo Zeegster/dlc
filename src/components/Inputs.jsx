@@ -387,7 +387,7 @@ export const MyDragList = ({
       }
       if (
         Store === useQuestions &&
-        Object.values(checkedState).every((value) => value === false)
+        Object.values(checkedState).some((value) => value === false)
       ) {
         unCorrect(QStore[QuestionStore]);
         useScore.setState((state) => ({

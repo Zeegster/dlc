@@ -64,7 +64,12 @@ const Question = () => {
     handleSubmit();
   }
   
-  
+  function handleComponent (){
+    setDisabledState(),
+    QCheckedState(),
+    setSelectedAnswer(questions.id)
+
+  }
   useEffect(() => {
     console.log('UseEffect', QChecked, answer, correctAnswers, unCorrectAnswer);
     console.log('UseEffect2', userAnswer);
@@ -133,11 +138,7 @@ const Question = () => {
           {/* Кнопка Ответить */}
           {!isDisabled && questions.type == 'draglist' && (
             <CommonButton
-              onClick={() => (
-                setDisabledState(),
-                QCheckedState(),
-                setSelectedAnswer(questions.id)
-              )}
+              onClick={() => handleComponent()}
               text={'Проверить'}
             />
           )}
