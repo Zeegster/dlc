@@ -331,10 +331,12 @@ let qStoreCopy=[]
     return array;
   }
   const qStore = shuffleArray([...qStoreCopy]);
+  let checkedState = [];
 
   const [cardList, setCardList] = useState(qStore);
   const [currentCard, setCurrentCard] = useState(null);
   useEffect(() => {
+    console.log('LOOOKK',answer);
 
     if (!QChecked) {
       const shuffledList = shuffleArray([...qStoreCopy]);
@@ -346,19 +348,18 @@ let qStoreCopy=[]
       );
     }
     if (QChecked){
+
       if(Object.values(checkedState).length === 0){
         addUserAnswer(QuestionStore,false)
       } else{
 
       const allTrue = Object.values(checkedState).every((value) => value === true);
       allTrue?addUserAnswer(QuestionStore,allTrue):addUserAnswer(QuestionStore,allTrue)
-    
     }
 
     }
-  }, [ QChecked]);
+  }, [ QChecked, addUserAnswer]);
 
-  let checkedState = [];
   const compareOrder = (arr1, arr2) => {
     if (arr1.length !== arr2.length) {
       return false;
@@ -369,7 +370,6 @@ let qStoreCopy=[]
   const matches = (state) => {
     // console.log('MATCHES INIT');
     if (state !== false && currentCard) {
-      console.log('State = ', state);
 
       // Функция сортировки списков по полю order
       const sortCards = (a, b) => {

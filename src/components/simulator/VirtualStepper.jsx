@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-
 import { Stepper, Step } from '@material-tailwind/react';
 import ProgressBar from '../ProgressBar';
 import { SimulatorPageContent } from '../../store/content/SimulatorPageContent';
 import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
 import { useQuestionsStepper } from '../../store/StoreStepper';
+import { useNavigate } from 'react-router-dom';
+import { useQuestions } from '../../store/store';
+
 
 export function VirtualStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const navigate = useNavigate();
 
-  const totalSteps = SimulatorPageContent.items.length;
-
-  const activeItem = SimulatorPageContent.items[activeStep];
   const {
     QChecked,
     QCheckedState,
@@ -20,20 +19,25 @@ export function VirtualStepper() {
     setDisabledState,
     shouldReload,
     setShouldReload,
-    setCheckCount,
+    setCheckCount,activeStep, setActiveStep,answer, unCorrectAnswer
   } = useQuestionsStepper();
+  const totalSteps = SimulatorPageContent.items.length;
+
+  const activeItem = SimulatorPageContent.items[activeStep] || {};
+
 
   const handleNext = () => {
-    if (activeStep < totalSteps - 1) {
-      setActiveStep((cur) => cur + 1);
+    if (activeStep < totalSteps ) {
+      setActiveStep(activeStep + 1);
       QChecked ? (QCheckedState(), setDisabledState()) : QChecked;
       setCheckCount(0); // Reset checkCount
     }
+    
   };
-
+  
   const handlePrev = () => {
     if (activeStep > 0) {
-      setActiveStep((cur) => cur - 1);
+      setActiveStep(activeStep - 1);
       QChecked ? (QCheckedState(), setDisabledState()) : QChecked;
       setCheckCount(0); // Reset checkCount
     }
@@ -46,6 +50,17 @@ export function VirtualStepper() {
     
   };
 
+  
+ useEffect(() => {
+  if (activeStep >= totalSteps) {
+    navigate('/simresult');
+  }
+  console.log('Stepper Step',activeStep);
+  console.log('Stepper answer',answer);
+  
+ }, [activeStep, answer]);
+
+ 
   return (
     <>
       <div className='w-11/12 m-auto h-4/5 px-12  flex flex-col justify-evenly'>
@@ -84,7 +99,7 @@ export function VirtualStepper() {
 
         <CommonButton
           onClick={handleNext}
-          text='Далее'
+          text={activeStep === totalSteps - 1 ? 'Закончить' : 'Далее'}
         />
       </div>
     </>

@@ -16,8 +16,8 @@ const Question = () => {
     useQuestionsStepper();
   const questions = QStore[id];
   const { getScore } = useScore();
-  let userAnswer = Object.assign([], answer); // Create a copy of answer;
 
+  const [userAnswer, setUserAnswer] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswers, setShowAnswers] = useState(false);
 
@@ -43,8 +43,8 @@ const Question = () => {
   };
 
   function handleAnswer(answer, question) {
-    console.log(answer);
-    if (answer.isCorrect || answer.userAnswer) {
+    
+    if (answer.isCorrect ) {
       answerQuestion(question);
       getScore(question.value);
       useScore.setState((state) => ({
@@ -53,7 +53,7 @@ const Question = () => {
       console.log('CORRECT ANSWER');
     }
 
-    if (!answer.isCorrect|| !answer.userAnswer) {
+    if (!answer.isCorrect) {
       unCorrect(questions);
       useScore.setState((state) => ({
         attempt: state.attempt - 1,
@@ -63,10 +63,30 @@ const Question = () => {
 
     handleSubmit();
   }
+  function handleComponentAnswer() {
+    setUserAnswer(answer) 
+    if (userAnswer) {
+      answerQuestion(questions);
+      getScore(questions.value);
+      useScore.setState((state) => ({
+        attempt: state.attempt - 1,
+      }));
+      console.log('CORRECT ANSWER');
+    }
 
+    if (!userAnswer) {
+      unCorrect(questions);
+      useScore.setState((state) => ({
+        attempt: state.attempt - 1,
+      }));
+      console.log('UNCORRECT ANSWER');
+    }
+  }
   useEffect(() => {
-    console.log('UseEffect',QChecked, userAnswer, correctAnswers, unCorrectAnswer);
-  }, [answer,correctAnswers, unCorrectAnswer]);
+    console.log('UseEffect', QChecked, answer, correctAnswers, unCorrectAnswer);
+    isDisabled&&setUserAnswer(answer)&&handleComponentAnswer
+    console.log('UseEffect2', userAnswer);
+  }, [ userAnswer, answer, correctAnswers, unCorrectAnswer]);
 
   return (
     <>
@@ -135,7 +155,8 @@ const Question = () => {
                 setDisabledState(),
                 QCheckedState(),
                 setSelectedAnswer(questions.id),
-                handleAnswer(userAnswer, questions)
+                handleComponentAnswer()
+
               )}
               text={'Проверить'}
             />

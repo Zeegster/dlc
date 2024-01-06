@@ -140,6 +140,7 @@ export const useQuestionsStepper = create(
           if (existingAnswerIndex !== -1) {
             // An answer with the same index already exists, update it
             state.answer[existingAnswerIndex] = { index, userAnswer };
+            console.log(state.answer[existingAnswerIndex]);
           } else {
             // No answer with the same index exists, insert a new one at the correct position
             const newAnswer = { index, userAnswer };
@@ -172,5 +173,22 @@ export const useQuestionsStepper = create(
         })
       );
     },
-  }))
+    activeStep:0,
+    setActiveStep: (step) => set({ activeStep: step }),
+
+    correctAnswers: [],
+  unCorrectAnswer: [],
+
+  answerQuestion: (answer) =>
+    set((state) => ({
+      correctAnswers: [...state.correctAnswers, answer],
+    })),
+
+  unCorrect: (answer) =>
+    set((state) => ({
+      unCorrectAnswer: [...state.unCorrectAnswer, answer],
+    })),
+  
+  }
+  ))
 );
