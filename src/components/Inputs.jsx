@@ -21,6 +21,7 @@ export const SelectInput = ({
   } = useQuestionsStepper();
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
+  
   const qStore = QStore[QuestionStore];
 
   const resetValues = () => {
