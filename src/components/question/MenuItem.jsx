@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useQuestions } from "../../store/store";
+import { useQuestions } from "../../store/Store";
 import PropTypes from 'prop-types';
 
 const MenuItem = ({ question, id }) => {

@@ -1,5 +1,5 @@
 import { Checkbox } from 'react-daisyui';
-import { useQuestions, useScore } from '../store/store';
+import { useQuestions, useScore } from '../store/Store';
 import { useQuestionsStepper } from '../store/StoreStepper';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ export const SelectInput = ({
   } = useQuestionsStepper();
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
-  
+
   const qStore = QStore[QuestionStore];
 
   const resetValues = () => {
@@ -147,13 +147,18 @@ export const TextInput = ({
   Store = useQuestionsStepper,
 }) => {
   const { QStore } = Store();
+  const { answerQuestion, unCorrect } = useQuestions();
+  const { getScore } = useScore();
   const { QChecked, setDisabledState, isDisabled, addUserAnswer, checkCount } =
     useQuestionsStepper();
   const [userValues, setUserValues] = useState([]);
   const [checkedState, setCheckedState] = useState([]);
-
-  const qStore = QStore[QuestionStore];
-
+  let qStore = [];
+  if (Store === useQuestionsStepper) {
+    qStore = [...QStore[QuestionStore]];
+  } else {
+    qStore = [...QStore[QuestionStore].options];
+  }
   const handleInput = (value, index) => {
     const optimizedValue = value.toLowerCase().replace(/ /g, '');
     setUserValues((prev) => {
@@ -167,7 +172,7 @@ export const TextInput = ({
     setUserValues([]);
     setCheckedState([]);
   };
-
+console.log(QChecked);
   useEffect(() => {
     if (QChecked !== false) {
       const newCheckedState = userValues.map((s, index) => {
@@ -180,6 +185,27 @@ export const TextInput = ({
 
       if (Object.values(newCheckedState).length === 0) {
         addUserAnswer(QuestionStore, false);
+      }
+      if (
+        Store === useQuestions &&
+        Object.values(newCheckedState).every((value) => value === true)
+      ) {
+        answerQuestion(QStore[QuestionStore]);
+        getScore(QStore[QuestionStore].value);
+        useScore.setState((state) => ({
+          attempt: state.attempt - 1,
+        }));
+        console.log('CORRECT ANSWER');
+      }
+      if (
+        Store === useQuestions &&
+        Object.values(newCheckedState).some((value) => value === false)
+      ) {
+        unCorrect(QStore[QuestionStore]);
+        useScore.setState((state) => ({
+          attempt: state.attempt - 1,
+        }));
+        console.log('UNCORRECT ANSWER');
       } else {
         const allTrue = Object.values(newCheckedState).every(
           (value) => value === true
@@ -192,7 +218,7 @@ export const TextInput = ({
     if (!QChecked) {
       resetValues();
     }
-  }, [checkCount]);
+  }, [QChecked]);
 
   return (
     <input
@@ -202,7 +228,6 @@ export const TextInput = ({
       }
       type='text'
       id={index}
-      value={userValues[index]?.value || ''}
       placeholder='Заполните пропуск'
       className={` m-auto py-1 border-b-2 text-sm text-gray-900 border-gray-300 rounded-sm focus:ring-blue-500 focus-visible:outline-blue-300 text-center ${classNames} ${
         isDisabled ? 'bg-gray-300 cursor-not-allowed' : ''

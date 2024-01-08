@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import HeaderInner from '../HeaderInner';
-import { useQuestions, useScore } from '../../store/store';
+import { useQuestions, useScore } from '../../store/Store';
 import CommonButton from '../buttons/CommonButton';
 import { SelectInput, TextInput, QCheckBox, MyDragList } from '../Inputs';
 import { useQuestionsStepper } from '../../store/StoreStepper';
@@ -77,7 +77,7 @@ const Question = () => {
 
   }
   useEffect(() => {
-    console.log('UseEffect', QChecked, correctAnswers, unCorrectAnswer);
+    console.log('UseEffect', id, correctAnswers, unCorrectAnswer);
   }, [ userAnswer, answer, correctAnswers, unCorrectAnswer]);
 
   return (
@@ -141,7 +141,7 @@ const Question = () => {
 
         <div className='w-full h-14 bg-blue-100 flex justify-center py-1'>
           {/* Кнопка Ответить */}
-          {!isDisabled && questions.type == 'draglist' && (
+          {!isDisabled && questions.type && (
             <CommonButton
               onClick={() => handleComponent()}
               text={'Проверить'}

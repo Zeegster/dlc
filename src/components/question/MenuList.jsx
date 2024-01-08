@@ -1,5 +1,5 @@
 import MenuItem from "./MenuItem";
-import { useQuestions, useScore } from "../../store/store";
+import { useQuestions, useScore } from "../../store/Store";
 import { useQuestionsStepper } from "../../store/StoreStepper";
 import { useEffect } from "react";
 const MenuList = () => {

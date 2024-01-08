@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useQuestions, useScore, useTimer } from '../store/store';
+import { useQuestions, useScore, useTimer } from '../store/Store';
 import HeaderInner from '../components/HeaderInner';
 import HomePageButton from '../components/buttons/HomePageButton';
 import { useNavigate } from 'react-router-dom';

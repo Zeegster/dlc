@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import MenuList from '../components/question/MenuList';
 import Timer from '../components/Timer';
-import { useQuestions, useScore, useTimer } from '../store/store';
+import { useQuestions, useScore, useTimer } from '../store/Store';
 import HomePageButton from '../components/buttons/HomePageButton';
 import MenuItem from '../components/question/MenuItem';
 

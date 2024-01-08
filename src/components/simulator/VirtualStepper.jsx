@@ -6,7 +6,7 @@ import CommonButton from '../buttons/CommonButton';
 import StepContainer from './StepContainer';
 import { useQuestionsStepper } from '../../store/StoreStepper';
 import { useNavigate } from 'react-router-dom';
-import { useQuestions } from '../../store/store';
+import { useQuestions } from '../../store/Store';
 
 
 export function VirtualStepper() {

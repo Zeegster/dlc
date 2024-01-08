@@ -1,4 +1,4 @@
-import { useTimer } from "../store/store";
+import { useTimer } from "../store/Store";
 
 
 function Timer() {
